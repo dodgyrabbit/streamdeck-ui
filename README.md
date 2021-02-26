@@ -38,6 +38,9 @@ In addition to just double clicking, you have a menu item called Configure that 
 #### [Wait until device is plugged in](https://github.com/exmatrikulator/streamdeck-ui/commit/326109d9a2815a3f5507a7844122647780ac7a43)
 This avoids the crash on startup if your Stream Deck is not plugged in.
 
+#### [Show configuration winow only the first time](https://github.com/exmatrikulator/streamdeck-ui/commit/ba25da606c9644a8b67d904ed28a0dfff0cf753a)
+When you run streamdeck and you have already configured it, it will not show the config window. Access it via the notification area menu.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
