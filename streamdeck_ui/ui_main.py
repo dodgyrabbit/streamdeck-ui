@@ -246,7 +246,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Stream Deck UI", None))
         self.actionImport.setText(QCoreApplication.translate("MainWindow", u"Import", None))
         self.actionExport.setText(QCoreApplication.translate("MainWindow", u"Export", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))

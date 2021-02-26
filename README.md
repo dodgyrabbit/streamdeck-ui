@@ -27,6 +27,8 @@ xdotool search --name '^Meet - .+$' windowactivate --sync key ctrl+d
 ```
 This script toggles the mute shortcut for Google Meet. Note that the meeting tab be active. You can still have multiple browser windows. If you have multiple screens with lots of tabs, I recommend just putting your meeting in it's own tab/window then this shortcut will always find it.
 
+#### Window title changed to Stream Deck UI
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
