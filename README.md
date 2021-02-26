@@ -14,6 +14,19 @@ _________________
 
 **streamdeck_ui** A Linux compatible UI for the Elgato Stream Deck.
 
+## What is this?
+
+The Streamdeck UI project is awesome but there are many pull requests and issues mentioned in the main repo. This is a fork where I can merge some of those PRs and get the app to be a bit more up to date.
+
+### Change Log (compared to offical build)
+
+#### [Improved command handling](https://github.com/timothycrosley/streamdeck-ui/pull/20)
+Commands with spaces were not handled properly. With this patch, the following command works properly:
+```
+xdotool search --name '^Meet - .+$' windowactivate --sync key ctrl+d
+```
+This script toggles the mute shortcut for Google Meet. Note that the meeting tab be active. You can still have multiple browser windows. If you have multiple screens with lots of tabs, I recommend just putting your meeting in it's own tab/window then this shortcut will always find it.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
