@@ -35,6 +35,9 @@ An invalid command with make Streamdeck UI hang. This change catches the excepti
 #### "Configure" menu item added to notification area
 In addition to just double clicking, you have a menu item called Configure that shows the main config window.
 
+#### [Wait until device is plugged in](https://github.com/exmatrikulator/streamdeck-ui/commit/326109d9a2815a3f5507a7844122647780ac7a43)
+This avoids the crash on startup if your Stream Deck is not plugged in.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
