@@ -3,12 +3,12 @@ import os
 import sys
 from functools import partial
 
-from PySide2 import QtWidgets
-from PySide2.QtCore import QSize, Qt, QTimer
-from PySide2.QtGui import QIcon
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import (
-    QAction,
+from PySide6 import QtWidgets
+from PySide6.QtCore import QSize, Qt, QTimer
+from PySide6.QtGui import QIcon
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
     QMainWindow,
