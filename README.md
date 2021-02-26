@@ -41,6 +41,9 @@ This avoids the crash on startup if your Stream Deck is not plugged in.
 #### [Show configuration winow only the first time](https://github.com/exmatrikulator/streamdeck-ui/commit/ba25da606c9644a8b67d904ed28a0dfff0cf753a)
 When you run streamdeck and you have already configured it, it will not show the config window. Access it via the notification area menu.
 
+#### [Show button text as white on black background](https://github.com/timothycrosley/streamdeck-ui/pull/91/files)
+Previously it was black on black and you could not see the text until you put focus on a button.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
