@@ -28,7 +28,11 @@ def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, s
 
         command = get_button_command(deck_id, page, key)
         if command:
-            Popen(shlex.split(command))
+            try:
+                Popen(shlex.split(command))
+            except Exception as ex:
+                warn(f"An error occurred when trying to execute the command {command}.\n\n{str(ex)}")
+                pass
 
         keys = get_button_keys(deck_id, page, key)
         if keys:

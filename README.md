@@ -29,6 +29,9 @@ This script toggles the mute shortcut for Google Meet. Note that the meeting tab
 
 #### Window title changed to Stream Deck UI
 
+#### Catch exception for invalid command
+An invalid command with make Streamdeck UI hang. This change catches the exception and logs a warning.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
