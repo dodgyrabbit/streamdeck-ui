@@ -249,8 +249,11 @@ def start(_exit: bool = False) -> None:
     tray.activated.connect(main_window.systray_clicked)
 
     menu = QMenu()
+    action_config = QAction("Configure")
+    action_config.triggered.connect(main_window.show)
     action_exit = QAction("Exit")
     action_exit.triggered.connect(app.exit)
+    menu.addAction(action_config)
     menu.addAction(action_exit)
 
     tray.setContextMenu(menu)

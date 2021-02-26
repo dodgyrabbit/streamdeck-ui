@@ -32,6 +32,9 @@ This script toggles the mute shortcut for Google Meet. Note that the meeting tab
 #### Catch exception for invalid command
 An invalid command with make Streamdeck UI hang. This change catches the exception and logs a warning.
 
+#### "Configure" menu item added to notification area
+In addition to just double clicking, you have a menu item called Configure that shows the main config window.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
