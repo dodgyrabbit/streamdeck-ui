@@ -20,29 +20,33 @@ The Streamdeck UI project is awesome but there are many pull requests and issues
 
 ### Change Log (compared to offical build)
 
-#### [Improved command handling](https://github.com/timothycrosley/streamdeck-ui/pull/20)
+#### 1. [Improved command handling](https://github.com/timothycrosley/streamdeck-ui/pull/20)
 Commands with spaces were not handled properly. With this patch, the following command works properly:
 ```
 xdotool search --name '^Meet - .+$' windowactivate --sync key ctrl+d
 ```
 This script toggles the mute shortcut for Google Meet. Note that the meeting tab be active. You can still have multiple browser windows. If you have multiple screens with lots of tabs, I recommend just putting your meeting in it's own tab/window then this shortcut will always find it.
 
-#### Window title changed to Stream Deck UI
+#### 2. Window title changed to Stream Deck UI
 
-#### Catch exception for invalid command
+#### 3. Catch exception for invalid command
 An invalid command with make Streamdeck UI hang. This change catches the exception and logs a warning.
 
-#### "Configure" menu item added to notification area
+#### 4. "Configure" menu item added to notification area
 In addition to just double clicking, you have a menu item called Configure that shows the main config window.
 
-#### [Wait until device is plugged in](https://github.com/exmatrikulator/streamdeck-ui/commit/326109d9a2815a3f5507a7844122647780ac7a43)
+#### 5. [Wait until device is plugged in](https://github.com/exmatrikulator/streamdeck-ui/commit/326109d9a2815a3f5507a7844122647780ac7a43)
 This avoids the crash on startup if your Stream Deck is not plugged in.
 
-#### [Show configuration winow only the first time](https://github.com/exmatrikulator/streamdeck-ui/commit/ba25da606c9644a8b67d904ed28a0dfff0cf753a)
+#### 6. [Show configuration winow only the first time](https://github.com/exmatrikulator/streamdeck-ui/commit/ba25da606c9644a8b67d904ed28a0dfff0cf753a)
 When you run streamdeck and you have already configured it, it will not show the config window. Access it via the notification area menu.
 
-#### [Show button text as white on black background](https://github.com/timothycrosley/streamdeck-ui/pull/91/files)
+#### 7. [Show button text as white on black background](https://github.com/timothycrosley/streamdeck-ui/pull/91/files)
 Previously it was black on black and you could not see the text until you put focus on a button.
+
+#### 8. Change OBS Scene
+Currently a work in progress. You can switch scenes but password support needs to be added.
+Install the [obs-websocket](https://github.com/Palakis/obs-websocket) plugin in OBS and select the scene you want to switch to when a button is pressed.
 
 ![Streamdeck UI Usage Example](art/example.gif)
 
