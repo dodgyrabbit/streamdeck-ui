@@ -14,6 +14,7 @@ hidapi = "^0.7.99"
 pynput = "^1.4"
 pyside2 = "^5.13"
 python-xlib = "^0.29"
+obs-websocket-py = "^0.5.3"
 
 [tool.poetry.dev-dependencies]
 vulture = "^1.0"

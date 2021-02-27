@@ -16,6 +16,8 @@ from StreamDeck.ImageHelpers import PILHelper
 
 from streamdeck_ui.config import CONFIG_FILE_VERSION, DEFAULT_FONT, FONTS_PATH, STATE_FILE
 
+from obswebsocket import obsws, requests
+
 image_cache: Dict[str, memoryview] = {}
 decks: Dict[str, StreamDeck.StreamDeck] = {}
 state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = {}
@@ -55,6 +57,19 @@ def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, s
         if switch_page:
             set_page(deck_id, switch_page - 1)
 
+        obs_scene = get_button_obs_scene(deck_id, page, key)
+        if obs_scene:
+            host = "localhost"
+            port = 4444
+            password = ""
+
+            try:
+                ws = obsws(host, port, password)
+                ws.connect()
+                ws.call(requests.SetCurrentScene(obs_scene))
+                ws.disconnect()
+            except:
+                pass
 
 def _save_state():
     export_config(STATE_FILE)
@@ -224,6 +239,17 @@ def set_button_write(deck_id: str, page: int, button: int, write: str) -> None:
 def get_button_write(deck_id: str, page: int, button: int) -> str:
     """Returns the text to be produced when the specified button is pressed"""
     return _button_state(deck_id, page, button).get("write", "")
+
+
+def get_button_obs_scene(deck_id: str, page: int, button: int) -> str:
+    """Returns the obs scene name when the specified button is pressed"""
+    return _button_state(deck_id, page, button).get("obs_scene", "")
+
+
+def set_button_obs_scene(deck_id: str, page: int, button: int, obs_scene: str) -> None:
+    """Sets the obs scene name to switch to when button is pressed"""
+    _button_state(deck_id, page, button)["obs_scene"] = obs_scene
+    _save_state()
 
 
 def set_brightness(deck_id: str, brightness: int) -> None:

@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(844, 625)
+        MainWindow.resize(805, 585)
         self.actionImport = QAction(MainWindow)
         self.actionImport.setObjectName(u"actionImport")
         self.actionExport = QAction(MainWindow)
@@ -42,6 +42,19 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer)
 
+        self.formLayout_2 = QFormLayout()
+        self.formLayout_2.setObjectName(u"formLayout_2")
+        self.label_10 = QLabel(self.centralwidget)
+        self.label_10.setObjectName(u"label_10")
+
+        self.formLayout_2.setWidget(1, QFormLayout.LabelRole, self.label_10)
+
+        self.obs_password = QLineEdit(self.centralwidget)
+        self.obs_password.setObjectName(u"obs_password")
+        self.obs_password.setEchoMode(QLineEdit.Password)
+
+        self.formLayout_2.setWidget(1, QFormLayout.FieldRole, self.obs_password)
+
         self.label_4 = QLabel(self.centralwidget)
         self.label_4.setObjectName(u"label_4")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
@@ -50,7 +63,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
         self.label_4.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_3.addWidget(self.label_4)
+        self.formLayout_2.setWidget(0, QFormLayout.LabelRole, self.label_4)
 
         self.brightness = QSlider(self.centralwidget)
         self.brightness.setObjectName(u"brightness")
@@ -62,12 +75,16 @@ class Ui_MainWindow(object):
         self.brightness.setMinimumSize(QSize(200, 0))
         self.brightness.setOrientation(Qt.Horizontal)
 
-        self.horizontalLayout_3.addWidget(self.brightness)
+        self.formLayout_2.setWidget(0, QFormLayout.FieldRole, self.brightness)
+
+
+        self.horizontalLayout_3.addLayout(self.formLayout_2)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
 
         self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(-1, 20, -1, -1)
         self.pages = QTabWidget(self.centralwidget)
@@ -129,7 +146,7 @@ class Ui_MainWindow(object):
 
         self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setMinimumSize(QSize(250, 0))
+        self.groupBox.setMinimumSize(QSize(350, 0))
         self.groupBox.setMaximumSize(QSize(250, 16777215))
         self.verticalLayout_3 = QVBoxLayout(self.groupBox)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -182,6 +199,11 @@ class Ui_MainWindow(object):
 
         self.write = QPlainTextEdit(self.groupBox)
         self.write.setObjectName(u"write")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.write.sizePolicy().hasHeightForWidth())
+        self.write.setSizePolicy(sizePolicy2)
 
         self.formLayout.setWidget(6, QFormLayout.FieldRole, self.write)
 
@@ -209,6 +231,16 @@ class Ui_MainWindow(object):
 
         self.formLayout.setWidget(5, QFormLayout.FieldRole, self.change_brightness)
 
+        self.obs_scene = QLineEdit(self.groupBox)
+        self.obs_scene.setObjectName(u"obs_scene")
+
+        self.formLayout.setWidget(7, QFormLayout.FieldRole, self.obs_scene)
+
+        self.label_9 = QLabel(self.groupBox)
+        self.label_9.setObjectName(u"label_9")
+
+        self.formLayout.setWidget(7, QFormLayout.LabelRole, self.label_9)
+
 
         self.verticalLayout_3.addLayout(self.formLayout)
 
@@ -224,7 +256,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 844, 27))
+        self.menubar.setGeometry(QRect(0, 0, 805, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
@@ -235,6 +267,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menuFile.addAction(self.actionImport)
         self.menuFile.addAction(self.actionExport)
+        self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
 
         self.retranslateUi(MainWindow)
@@ -250,6 +283,7 @@ class Ui_MainWindow(object):
         self.actionImport.setText(QCoreApplication.translate("MainWindow", u"Import", None))
         self.actionExport.setText(QCoreApplication.translate("MainWindow", u"Export", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"OBS password:  ", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Brightness:", None))
         self.pages.setTabText(self.pages.indexOf(self.page_1), QCoreApplication.translate("MainWindow", u"Page 1", None))
         self.pages.setTabText(self.pages.indexOf(self.page_2), QCoreApplication.translate("MainWindow", u"2", None))
@@ -270,6 +304,7 @@ class Ui_MainWindow(object):
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Write Text:", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Switch Page:", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Brightness +/-:", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"OBS Scene:", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 
