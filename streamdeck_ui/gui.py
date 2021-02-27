@@ -40,6 +40,11 @@ def _page(ui) -> int:
     return ui.pages.currentIndex()
 
 
+def update_button_obs_password(ui, text: str) -> None:
+    print(text)
+    api.set_obs_password(text)
+
+
 def update_button_obs_scene(ui, text: str) -> None:
     deck_id = _deck_id(ui)
     api.set_button_obs_scene(deck_id, _page(ui), selected_button.index, text)
@@ -274,6 +279,7 @@ def start(_exit: bool = False) -> None:
 
     tray.setContextMenu(menu)
 
+    ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
     ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
     ui.text.textChanged.connect(partial(queue_text_change, ui))
     ui.command.textChanged.connect(partial(update_button_command, ui))

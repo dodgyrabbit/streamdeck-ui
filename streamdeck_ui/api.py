@@ -22,6 +22,9 @@ image_cache: Dict[str, memoryview] = {}
 decks: Dict[str, StreamDeck.StreamDeck] = {}
 state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = {}
 
+# The OBS password is not stored in the state dictionary. You have to set it up when running streamdeck.
+# If it was stored with state, it would be in plain text. In future this could be improved. 
+obs_password = ""
 
 def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, state: bool) -> None:
     if state:
@@ -61,10 +64,9 @@ def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, s
         if obs_scene:
             host = "localhost"
             port = 4444
-            password = ""
 
             try:
-                ws = obsws(host, port, password)
+                ws = obsws(host, port, obs_password)
                 ws.connect()
                 ws.call(requests.SetCurrentScene(obs_scene))
                 ws.disconnect()
@@ -147,6 +149,10 @@ def ensure_decks_connected() -> None:
                     new_deck.set_key_callback(partial(_key_change_callback, new_deck_serial))
                     decks[new_deck_serial] = new_deck
                     render()
+
+def set_obs_password(password: str) -> None:
+    global obs_password
+    obs_password = password
 
 
 def get_deck(deck_id: str) -> Dict[str, Dict[str, Union[str, Tuple[int, int]]]]:
