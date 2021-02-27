@@ -41,7 +41,6 @@ def _page(ui) -> int:
 
 
 def update_button_obs_password(ui, text: str) -> None:
-    print(text)
     api.set_obs_password(text)
 
 
