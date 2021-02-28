@@ -48,6 +48,9 @@ Previously it was black on black and you could not see the text until you put fo
 Switch between OBS scenes. Password is supported, but not saved to settings file.
 Install the [obs-websocket](https://github.com/Palakis/obs-websocket) plugin in OBS and select the scene you want to switch to when a button is pressed.
 
+#### 9. Support for kasa smart plugs
+Toggle your lights on/off.
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features

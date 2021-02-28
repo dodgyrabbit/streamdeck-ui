@@ -40,6 +40,11 @@ def _page(ui) -> int:
     return ui.pages.currentIndex()
 
 
+def update_button_kasa_plug_ip(ui, text: str) -> None:
+    deck_id = _deck_id(ui)
+    api.set_button_kasa_plug_ip(deck_id, _page(ui), selected_button.index, text)
+    redraw_buttons(ui)
+
 def update_button_obs_password(ui, text: str) -> None:
     api.set_obs_password(text)
 
@@ -139,6 +144,7 @@ def button_clicked(ui, clicked_button, buttons) -> None:
     ui.change_brightness.setValue(api.get_button_change_brightness(deck_id, _page(ui), button_id))
     ui.switch_page.setValue(api.get_button_switch_page(deck_id, _page(ui), button_id))
     ui.obs_scene.setText(api.get_button_obs_scene(deck_id, _page(ui), button_id))
+    ui.kasa_plug_ip.setText(api.get_button_kasa_plug_ip(deck_id, _page(ui), button_id))
 
 def build_buttons(ui, tab) -> None:
     deck_id = _deck_id(ui)
@@ -278,6 +284,7 @@ def start(_exit: bool = False) -> None:
 
     tray.setContextMenu(menu)
 
+    ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
     ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
     ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
     ui.text.textChanged.connect(partial(queue_text_change, ui))

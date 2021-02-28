@@ -300,6 +300,19 @@
                </property>
               </widget>
              </item>
+             <item row="8" column="0">
+              <widget class="QLabel" name="label_11">
+               <property name="toolTip">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter the IP address for the Kasa smartplug. A toggle command will be sent, allowing you to turn a light or device plugged in on or off.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="text">
+                <string>Kasa plug IP:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="1">
+              <widget class="QLineEdit" name="kasa_plug_ip"/>
+             </item>
             </layout>
            </item>
           </layout>

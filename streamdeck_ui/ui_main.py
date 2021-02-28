@@ -241,6 +241,16 @@ class Ui_MainWindow(object):
 
         self.formLayout.setWidget(7, QFormLayout.LabelRole, self.label_9)
 
+        self.label_11 = QLabel(self.groupBox)
+        self.label_11.setObjectName(u"label_11")
+
+        self.formLayout.setWidget(8, QFormLayout.LabelRole, self.label_11)
+
+        self.kasa_plug_ip = QLineEdit(self.groupBox)
+        self.kasa_plug_ip.setObjectName(u"kasa_plug_ip")
+
+        self.formLayout.setWidget(8, QFormLayout.FieldRole, self.kasa_plug_ip)
+
 
         self.verticalLayout_3.addLayout(self.formLayout)
 
@@ -305,6 +315,10 @@ class Ui_MainWindow(object):
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Switch Page:", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Brightness +/-:", None))
         self.label_9.setText(QCoreApplication.translate("MainWindow", u"OBS Scene:", None))
+#if QT_CONFIG(tooltip)
+        self.label_11.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>Enter the IP address for the Kasa smartplug. A toggle command will be sent, allowing you to turn a light or device plugged in on or off.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Kasa plug IP:", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
     # retranslateUi
 

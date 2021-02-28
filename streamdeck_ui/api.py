@@ -18,6 +18,9 @@ from streamdeck_ui.config import CONFIG_FILE_VERSION, DEFAULT_FONT, FONTS_PATH, 
 
 from obswebsocket import obsws, requests
 
+import asyncio
+from kasa import SmartPlug
+
 image_cache: Dict[str, memoryview] = {}
 decks: Dict[str, StreamDeck.StreamDeck] = {}
 state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = {}
@@ -72,6 +75,21 @@ def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, s
                 ws.disconnect()
             except:
                 pass
+
+        kasa_plug_ip = get_button_kasa_plug_ip(deck_id, page, key)
+        if kasa_plug_ip:
+            try:
+                p = SmartPlug(kasa_plug_ip)
+                asyncio.run(p.update())
+                if p.is_on:
+                    asyncio.run(p.turn_off())
+                else:
+                    asyncio.run(p.turn_on())
+
+            except Exception as error:
+                warn(f"A {error} error occurred when trying to toggle plug {kasa_plug_ip}")
+            pass
+
 
 def _save_state():
     export_config(STATE_FILE)
@@ -255,6 +273,17 @@ def get_button_obs_scene(deck_id: str, page: int, button: int) -> str:
 def set_button_obs_scene(deck_id: str, page: int, button: int, obs_scene: str) -> None:
     """Sets the obs scene name to switch to when button is pressed"""
     _button_state(deck_id, page, button)["obs_scene"] = obs_scene
+    _save_state()
+
+
+def get_button_kasa_plug_ip(deck_id: str, page: int, button: int) -> str:
+    """Returns the IP address of the kasa plug"""
+    return _button_state(deck_id, page, button).get("kasa_plug_ip", "")
+
+
+def set_button_kasa_plug_ip(deck_id: str, page: int, button: int, kasa_plug_ip: str) -> None:
+    """Sets the IP address of the kasa plug"""
+    _button_state(deck_id, page, button)["kasa_plug_ip"] = kasa_plug_ip
     _save_state()
 
 
