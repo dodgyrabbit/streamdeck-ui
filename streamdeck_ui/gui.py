@@ -385,7 +385,9 @@ def start(_exit: bool = False) -> None:
     if _exit:
         return
     else:
-        sys.exit(app.exec_())
+        app.exec_()
+        api.close_decks()
+        sys.exit()
 
 
 if __name__ == "__main__":

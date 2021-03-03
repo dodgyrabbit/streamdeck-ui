@@ -54,6 +54,13 @@ Toggle your lights on/off.
 #### 10. Drag and drop to rearrange your keys
 ![Drag and drop example](art/drag-drop.gif)
 
+#### 11. Graceful shutdown
+Fixes the following error on exit:
+```
+double free or corruption (fasttop)
+Aborted (core dumped)
+```
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features
