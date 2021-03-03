@@ -5,8 +5,8 @@ import time
 from functools import partial
 
 from PySide2 import QtWidgets
-from PySide2.QtCore import QSize, Qt, QTimer
-from PySide2.QtGui import QIcon
+from PySide2.QtCore import QSize, Qt, QTimer, QMimeData
+from PySide2.QtGui import QIcon, QDrag
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (
     QAction,
@@ -28,8 +28,62 @@ BUTTON_SYTLE = """
     QToolButton:focus{border:none; }
 """
 
+BUTTON_DRAG_SYTLE = """
+    QToolButton{background-color:white; color:black;}
+    QToolButton:checked{background-color:darkGray; color:black;}
+    QToolButton:focus{border:none; }
+"""
+
 selected_button: QtWidgets.QToolButton
 text_timer = None
+
+
+class DraggableButton(QtWidgets.QToolButton):
+    """A QToolButton that supports drag and drop and swaps the button properties on drop """
+    def __init__(self, parent, ui):
+        super(DraggableButton, self).__init__(parent)
+
+        self.setAcceptDrops(True)
+        self.ui = ui
+
+    def mouseMoveEvent(self, e):
+
+        if e.buttons() != Qt.LeftButton:
+            return
+
+        mimedata = QMimeData()
+        drag = QDrag(self)
+        drag.setMimeData(mimedata)
+        drag.exec_(Qt.MoveAction)
+
+    def dropEvent(self, e):
+        global selected_button
+
+        self.setStyleSheet(BUTTON_SYTLE)
+
+        # Ignore drag and drop on yourself
+        if e.source().index == self.index:
+            return
+
+        api.swap_buttons(_deck_id(self.ui), _page(self.ui), e.source().index, self.index)
+        # In the case that we've dragged the currently selected button, we have to
+        # check the target button instead so it appears that it followed the drag/drop
+        if e.source().isChecked():
+            e.source().setChecked(False)
+            self.setChecked(True)
+            selected_button = self
+
+        redraw_buttons(self.ui)
+
+    def dragEnterEvent(self, e):
+        if (type(self) is DraggableButton):
+            e.setAccepted(True)
+            self.setStyleSheet(BUTTON_DRAG_SYTLE)
+        else:
+            e.setAccepted(False)
+
+    def dragLeaveEvent(self, e):
+        self.setStyleSheet(BUTTON_SYTLE)
 
 
 def _deck_id(ui) -> str:
@@ -166,7 +220,7 @@ def build_buttons(ui, tab) -> None:
         row_layout.addLayout(column_layout)
 
         for _column in range(deck["layout"][1]):  # type: ignore
-            button = QtWidgets.QToolButton(base_widget)
+            button = DraggableButton(base_widget, ui)
             button.setCheckable(True)
             button.index = index
             button.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
@@ -177,6 +231,8 @@ def build_buttons(ui, tab) -> None:
             column_layout.addWidget(button)
             index += 1
 
+    # Note that the button click event captures the ui variable, the current button
+    #  and all the other buttons
     for button in buttons:
         button.clicked.connect(
             lambda button=button, buttons=buttons: button_clicked(ui, button, buttons)
@@ -298,13 +354,13 @@ def start(_exit: bool = False) -> None:
 
     items = api.open_decks().items()
     print("wait for device(s)")
-    
+
     while len(items) == 0:
         time.sleep(3)
         items = api.open_decks().items()
-    
+
     print("found " + str(len(items)))
-    
+
     for deck_id, deck in items:
         ui.device_list.addItem(f"{deck['type']} - {deck_id}", userData=deck_id)
 
@@ -325,7 +381,7 @@ def start(_exit: bool = False) -> None:
     tray.show()
     if first_start:
         main_window.show()
-    
+
     if _exit:
         return
     else:

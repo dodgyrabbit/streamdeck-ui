@@ -51,6 +51,9 @@ Install the [obs-websocket](https://github.com/Palakis/obs-websocket) plugin in 
 #### 9. Support for kasa smart plugs
 Toggle your lights on/off.
 
+#### 10. Drag and drop to rearrange your keys
+![Drag and drop example](art/drag-drop.gif)
+
 ![Streamdeck UI Usage Example](art/example.gif)
 
 ## Key Features

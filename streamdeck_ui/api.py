@@ -26,7 +26,7 @@ decks: Dict[str, StreamDeck.StreamDeck] = {}
 state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = {}
 
 # The OBS password is not stored in the state dictionary. You have to set it up when running streamdeck.
-# If it was stored with state, it would be in plain text. In future this could be improved. 
+# If it was stored with state, it would be in plain text. In future this could be improved.
 obs_password = ""
 
 def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, state: bool) -> None:
@@ -182,6 +182,19 @@ def _button_state(deck_id: str, page: int, button: int) -> dict:
     buttons_state = buttons.setdefault(page, {})  # type: ignore
     return buttons_state.setdefault(button, {})  # type: ignore
 
+
+def swap_buttons(deck_id: str, page: int, source_button: int, target_button: int) -> None:
+    """Swaps the properties of the source and target buttons"""
+    temp = state[deck_id]["buttons"][page][source_button]
+    state[deck_id]["buttons"][page][source_button] = state[deck_id]["buttons"][page][target_button]
+    state[deck_id]["buttons"][page][target_button] = temp
+
+    # Clear the cache so images will be recreated on render
+    image_cache.pop(f"{deck_id}.{page}.{source_button}", None)
+    image_cache.pop(f"{deck_id}.{page}.{target_button}", None)
+
+    _save_state()
+    render()
 
 def set_button_text(deck_id: str, page: int, button: int, text: str) -> None:
     """Set the text associated with a button"""
