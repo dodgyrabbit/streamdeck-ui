@@ -22,13 +22,13 @@ from streamdeck_ui import api
 from streamdeck_ui.config import LOGO, PROJECT_PATH, STATE_FILE
 from streamdeck_ui.ui_main import Ui_MainWindow
 
-BUTTON_SYTLE = """
+BUTTON_STYLE = """
     QToolButton{background-color:black; color:white;}
     QToolButton:checked{background-color:darkGray; color:black;}
     QToolButton:focus{border:none; }
 """
 
-BUTTON_DRAG_SYTLE = """
+BUTTON_DRAG_STYLE = """
     QToolButton{background-color:white; color:black;}
     QToolButton:checked{background-color:darkGray; color:black;}
     QToolButton:focus{border:none; }
@@ -59,7 +59,7 @@ class DraggableButton(QtWidgets.QToolButton):
     def dropEvent(self, e):
         global selected_button
 
-        self.setStyleSheet(BUTTON_SYTLE)
+        self.setStyleSheet(BUTTON_STYLE)
 
         # Ignore drag and drop on yourself
         if e.source().index == self.index:
@@ -78,12 +78,12 @@ class DraggableButton(QtWidgets.QToolButton):
     def dragEnterEvent(self, e):
         if (type(self) is DraggableButton):
             e.setAccepted(True)
-            self.setStyleSheet(BUTTON_DRAG_SYTLE)
+            self.setStyleSheet(BUTTON_DRAG_STYLE)
         else:
             e.setAccepted(False)
 
     def dragLeaveEvent(self, e):
-        self.setStyleSheet(BUTTON_SYTLE)
+        self.setStyleSheet(BUTTON_STYLE)
 
 
 def _deck_id(ui) -> str:
@@ -226,7 +226,7 @@ def build_buttons(ui, tab) -> None:
             button.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
             button.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
             button.setIconSize(QSize(100, 100))
-            button.setStyleSheet(BUTTON_SYTLE)
+            button.setStyleSheet(BUTTON_STYLE)
             buttons.append(button)
             column_layout.addWidget(button)
             index += 1
