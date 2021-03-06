@@ -16,11 +16,16 @@ from PySide2.QtWidgets import (
     QMenu,
     QSizePolicy,
     QSystemTrayIcon,
+    QDialog,
+    QTreeWidgetItem,
+    QWidget
 )
 
 from streamdeck_ui import api
 from streamdeck_ui.config import LOGO, PROJECT_PATH, STATE_FILE
 from streamdeck_ui.ui_main import Ui_MainWindow
+from streamdeck_ui.preferences import Ui_Dialog
+from streamdeck_ui.ui_action_command import Ui_action_command
 
 BUTTON_STYLE = """
     QToolButton{background-color:black; color:white;}
@@ -98,6 +103,7 @@ def update_button_kasa_plug_ip(ui, text: str) -> None:
     deck_id = _deck_id(ui)
     api.set_button_kasa_plug_ip(deck_id, _page(ui), selected_button.index, text)
     redraw_buttons(ui)
+
 
 def update_button_obs_password(ui, text: str) -> None:
     api.set_obs_password(text)
@@ -264,9 +270,16 @@ def import_config(window) -> None:
     redraw_buttons(window.ui)
 
 
+def show_preferences(window) -> None:
+    preferences = PreferencesDialog(window)
+    preferences.show()
+    preferences.activateWindow()
+    return
+
+
 def sync(ui) -> None:
     api.ensure_decks_connected()
-    ui.brightness.setValue(api.get_brightness(_deck_id(ui)))
+    #ui.brightness.setValue(api.get_brightness(_deck_id(ui)))
     ui.pages.setCurrentIndex(api.get_page(_deck_id(ui)))
 
 
@@ -280,12 +293,39 @@ def build_device(ui, _device_index=None) -> None:
     _highlight_first_button(ui)
 
 
+class ActionCommand(QWidget):
+    def __init__(self, parent):
+        QtWidgets.QWidget.__init__(self, parent)
+        #super(Ui_action_command, self).__init__(parent)
+        self.ui = Ui_action_command()
+        self.ui.setupUi(self)
+        self.show()
+
+
+class PreferencesDialog(QDialog):
+    def __init__(self, parent):
+
+        # TODO: These two statements seem equivalent
+        QDialog.__init__(self, parent)
+        #super(PreferencesDialog, self).__init__(parent)
+        self.ui = Ui_Dialog()
+        self.ui.setupUi(self)
+        self.show()
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.window_shown: bool = True
+        
+        # Replace the help text with mine
+        old = self.ui.plugin.takeAt(0)
+        old.widget().deleteLater()
+        self.ui.plugin.addWidget(ActionCommand(self))
+
+        self.ui.select_action.addItem(ActionCommand(self))
 
     def closeEvent(self, event) -> None:  # noqa: N802 - Part of QT signature.
         self.window_shown = False
@@ -340,17 +380,17 @@ def start(_exit: bool = False) -> None:
 
     tray.setContextMenu(menu)
 
-    ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
-    ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
-    ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
-    ui.text.textChanged.connect(partial(queue_text_change, ui))
-    ui.command.textChanged.connect(partial(update_button_command, ui))
-    ui.keys.textChanged.connect(partial(update_button_keys, ui))
-    ui.write.textChanged.connect(partial(update_button_write, ui))
-    ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
-    ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
-    ui.imageButton.clicked.connect(partial(select_image, main_window))
-    ui.brightness.valueChanged.connect(partial(set_brightness, ui))
+    #ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
+    #ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
+    #ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
+    #ui.text.textChanged.connect(partial(queue_text_change, ui))
+    #ui.command.textChanged.connect(partial(update_button_command, ui))
+    #ui.keys.textChanged.connect(partial(update_button_keys, ui))
+    #ui.write.textChanged.connect(partial(update_button_write, ui))
+    #ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
+    #ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
+    #ui.imageButton.clicked.connect(partial(select_image, main_window))
+    #ui.brightness.valueChanged.connect(partial(set_brightness, ui))
 
     items = api.open_decks().items()
     print("wait for device(s)")
@@ -371,6 +411,7 @@ def start(_exit: bool = False) -> None:
 
     ui.actionExport.triggered.connect(partial(export_config, main_window))
     ui.actionImport.triggered.connect(partial(import_config, main_window))
+    ui.actionPreferences.triggered.connect(partial(show_preferences, main_window))
     ui.actionExit.triggered.connect(app.exit)
 
     timer = QTimer()
@@ -379,8 +420,8 @@ def start(_exit: bool = False) -> None:
 
     api.render()
     tray.show()
-    if first_start:
-        main_window.show()
+    #if first_start:
+    main_window.show()
 
     if _exit:
         return
