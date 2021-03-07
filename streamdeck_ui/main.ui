@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1053</width>
-    <height>526</height>
+    <width>968</width>
+    <height>517</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2,0">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2">
         <property name="spacing">
          <number>6</number>
         </property>
@@ -136,7 +136,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0,0,0,0,1">
+         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1,0,0,0,0">
           <property name="spacing">
            <number>6</number>
           </property>
@@ -146,13 +146,6 @@
           <property name="rightMargin">
            <number>10</number>
           </property>
-          <item>
-           <layout class="QGridLayout" name="gridLayout">
-            <property name="leftMargin">
-             <number>40</number>
-            </property>
-           </layout>
-          </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
             <property name="spacing">
@@ -167,10 +160,13 @@
             <item>
              <layout class="QGridLayout" name="gridLayout_12">
               <property name="bottomMargin">
-               <number>20</number>
+               <number>0</number>
               </property>
               <property name="horizontalSpacing">
                <number>0</number>
+              </property>
+              <property name="verticalSpacing">
+               <number>3</number>
               </property>
               <item row="0" column="1">
                <widget class="QLineEdit" name="text">
@@ -210,38 +206,23 @@
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QRadioButton" name="top">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
+                 <widget class="QToolButton" name="toolButton_3">
                   <property name="text">
-                   <string>Top</string>
+                   <string>⎯</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QRadioButton" name="middle">
+                 <widget class="QToolButton" name="toolButton">
                   <property name="text">
-                   <string>Middle</string>
+                   <string>─</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QRadioButton" name="bottom">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
+                 <widget class="QToolButton" name="toolButton_2">
                   <property name="text">
-                   <string>Bottom</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
+                   <string>‾</string>
                   </property>
                  </widget>
                 </item>
@@ -251,6 +232,9 @@
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_7">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <property name="bottomMargin">
                <number>0</number>
               </property>
@@ -258,8 +242,8 @@
                <widget class="QToolButton" name="image">
                 <property name="minimumSize">
                  <size>
-                  <width>64</width>
-                  <height>64</height>
+                  <width>48</width>
+                  <height>48</height>
                  </size>
                 </property>
                 <property name="text">
@@ -291,12 +275,21 @@
            </layout>
           </item>
           <item>
-           <widget class="QComboBox" name="select_action">
-            <item>
+           <widget class="QTreeWidget" name="tree">
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="headerHidden">
+             <bool>true</bool>
+            </property>
+            <column>
              <property name="text">
-              <string>Select an action</string>
+              <string notr="true">1</string>
              </property>
-            </item>
+            </column>
            </widget>
           </item>
           <item>
@@ -336,8 +329,14 @@
           </item>
           <item>
            <widget class="QPushButton" name="add">
+            <property name="maximumSize">
+             <size>
+              <width>150</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Add to list  &gt;</string>
+             <string>Add to actions</string>
             </property>
            </widget>
           </item>
@@ -354,72 +353,73 @@
             </property>
            </spacer>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <item>
-             <widget class="QLabel" name="label_actions">
-              <property name="text">
-               <string>Actions:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_actions">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QToolButton" name="down">
-              <property name="text">
-               <string>⬆️</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../art/down_arrow.png</normaloff>../art/down_arrow.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="up">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../art/up_arrow.png</normaloff>../art/up_arrow.png</iconset>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="remove">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>../art/trash.png</normaloff>../art/trash.png</iconset>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QListWidget" name="listWidget"/>
+           <widget class="QGroupBox" name="Actions">
+            <property name="title">
+             <string>Actions</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,0">
+               <item>
+                <widget class="QToolButton" name="down">
+                 <property name="text">
+                  <string>⬆️</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../art/down_arrow.png</normaloff>../art/down_arrow.png</iconset>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="up">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../art/up_arrow.png</normaloff>../art/up_arrow.png</iconset>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_actions">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QToolButton" name="remove">
+                 <property name="text">
+                  <string>...</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>../art/trash.png</normaloff>../art/trash.png</iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </item>
@@ -434,7 +434,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1053</width>
+     <width>968</width>
      <height>22</height>
     </rect>
    </property>

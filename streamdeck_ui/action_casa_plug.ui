@@ -34,7 +34,7 @@
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Command:</string>
+        <string>IP Address:</string>
        </property>
       </widget>
      </item>
@@ -50,7 +50,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Use the **command** action to run a program on your computer. For example, type **code** to launch Visual Studio Code (assuming you have it installed of course!)</string>
+        <string>Use the **Kasa smart plug** action to turn a plug on or off. It will automatically determine the current on/off state and toggle the switch accordingly.</string>
        </property>
        <property name="textFormat">
         <enum>Qt::MarkdownText</enum>

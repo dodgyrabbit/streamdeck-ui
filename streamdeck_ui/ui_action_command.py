@@ -17,7 +17,7 @@ class Ui_action_command(object):
     def setupUi(self, action_command):
         if not action_command.objectName():
             action_command.setObjectName(u"action_command")
-        action_command.resize(391, 213)
+        action_command.resize(414, 287)
         self.verticalLayout = QVBoxLayout(action_command)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)

@@ -325,7 +325,34 @@ class MainWindow(QMainWindow):
         old.widget().deleteLater()
         self.ui.plugin.addWidget(ActionCommand(self))
 
-        self.ui.select_action.addItem(ActionCommand(self))
+        # TODO: Dynamically load this
+        self.ui.tree.setHeaderLabels([""])
+        tree_widget_item1 = QTreeWidgetItem(["Keyboard"])
+        tree_widget_item1.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
+        tree_widget_item1.setExpanded(True)
+
+        run_command = QTreeWidgetItem(["Run command"])
+        run_command.setIcon(0, QIcon("streamdeck_ui/terminal_24.png"))
+        tree_widget_item1.addChild(run_command)
+
+        shortcut_keys = QTreeWidgetItem(["Shortcut keys"])
+        shortcut_keys.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
+        tree_widget_item1.addChild(shortcut_keys)
+
+        write_text = QTreeWidgetItem(["Write text"])
+        write_text.setIcon(0, QIcon("streamdeck_ui/text_24.png"))
+        tree_widget_item1.addChild(write_text)
+        
+        tree_widget_item2 = QTreeWidgetItem(["OBS"])
+        tree_widget_item2.addChild(QTreeWidgetItem(["Change scene"]))
+        tree_widget_item3 = QTreeWidgetItem(["Kasa"])
+        tree_widget_item3.addChild(QTreeWidgetItem(["Toggle light switch"]))
+        tree_widget_item4 = QTreeWidgetItem(["Stream Deck"])
+        tree_widget_item4.addChild(QTreeWidgetItem(["Change brightness"]))
+        self.ui.tree.addTopLevelItem(tree_widget_item1)
+        self.ui.tree.addTopLevelItem(tree_widget_item2)
+        self.ui.tree.addTopLevelItem(tree_widget_item3)
+        self.ui.tree.addTopLevelItem(tree_widget_item4)
 
     def closeEvent(self, event) -> None:  # noqa: N802 - Part of QT signature.
         self.window_shown = False

@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1053, 526)
+        MainWindow.resize(968, 517)
         self.actionImport = QAction(MainWindow)
         self.actionImport.setObjectName(u"actionImport")
         self.actionExport = QAction(MainWindow)
@@ -122,12 +122,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setSpacing(6)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.verticalLayout_4.setContentsMargins(10, -1, 10, -1)
-        self.gridLayout = QGridLayout()
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.gridLayout.setContentsMargins(40, -1, -1, -1)
-
-        self.verticalLayout_4.addLayout(self.gridLayout)
-
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
@@ -135,7 +129,8 @@ class Ui_MainWindow(object):
         self.gridLayout_12 = QGridLayout()
         self.gridLayout_12.setObjectName(u"gridLayout_12")
         self.gridLayout_12.setHorizontalSpacing(0)
-        self.gridLayout_12.setContentsMargins(-1, -1, -1, 20)
+        self.gridLayout_12.setVerticalSpacing(3)
+        self.gridLayout_12.setContentsMargins(-1, -1, -1, 0)
         self.text = QLineEdit(self.centralwidget)
         self.text.setObjectName(u"text")
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
@@ -154,28 +149,20 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addItem(self.horizontalSpacer)
 
-        self.top = QRadioButton(self.centralwidget)
-        self.top.setObjectName(u"top")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.top.sizePolicy().hasHeightForWidth())
-        self.top.setSizePolicy(sizePolicy1)
+        self.toolButton_3 = QToolButton(self.centralwidget)
+        self.toolButton_3.setObjectName(u"toolButton_3")
 
-        self.horizontalLayout_3.addWidget(self.top)
+        self.horizontalLayout_3.addWidget(self.toolButton_3)
 
-        self.middle = QRadioButton(self.centralwidget)
-        self.middle.setObjectName(u"middle")
+        self.toolButton = QToolButton(self.centralwidget)
+        self.toolButton.setObjectName(u"toolButton")
 
-        self.horizontalLayout_3.addWidget(self.middle)
+        self.horizontalLayout_3.addWidget(self.toolButton)
 
-        self.bottom = QRadioButton(self.centralwidget)
-        self.bottom.setObjectName(u"bottom")
-        sizePolicy1.setHeightForWidth(self.bottom.sizePolicy().hasHeightForWidth())
-        self.bottom.setSizePolicy(sizePolicy1)
-        self.bottom.setChecked(True)
+        self.toolButton_2 = QToolButton(self.centralwidget)
+        self.toolButton_2.setObjectName(u"toolButton_2")
 
-        self.horizontalLayout_3.addWidget(self.bottom)
+        self.horizontalLayout_3.addWidget(self.toolButton_2)
 
 
         self.gridLayout_12.addLayout(self.horizontalLayout_3, 1, 0, 1, 2)
@@ -184,11 +171,12 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.gridLayout_12)
 
         self.verticalLayout_7 = QVBoxLayout()
+        self.verticalLayout_7.setSpacing(0)
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.verticalLayout_7.setContentsMargins(-1, -1, -1, 0)
         self.image = QToolButton(self.centralwidget)
         self.image.setObjectName(u"image")
-        self.image.setMinimumSize(QSize(64, 64))
+        self.image.setMinimumSize(QSize(48, 48))
         self.image.setIconSize(QSize(64, 64))
 
         self.verticalLayout_7.addWidget(self.image)
@@ -204,11 +192,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
-        self.select_action = QComboBox(self.centralwidget)
-        self.select_action.addItem("")
-        self.select_action.setObjectName(u"select_action")
+        self.tree = QTreeWidget(self.centralwidget)
+        __qtreewidgetitem = QTreeWidgetItem()
+        __qtreewidgetitem.setText(0, u"1");
+        self.tree.setHeaderItem(__qtreewidgetitem)
+        self.tree.setObjectName(u"tree")
+        self.tree.setIconSize(QSize(24, 24))
+        self.tree.setHeaderHidden(True)
 
-        self.verticalLayout_4.addWidget(self.select_action)
+        self.verticalLayout_4.addWidget(self.tree)
 
         self.plugin = QVBoxLayout()
         self.plugin.setSpacing(0)
@@ -216,11 +208,11 @@ class Ui_MainWindow(object):
         self.plugin.setContentsMargins(-1, 20, -1, 20)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy1)
         self.label.setTextFormat(Qt.MarkdownText)
         self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.label.setWordWrap(True)
@@ -232,6 +224,7 @@ class Ui_MainWindow(object):
 
         self.add = QPushButton(self.centralwidget)
         self.add.setObjectName(u"add")
+        self.add.setMaximumSize(QSize(150, 16777215))
 
         self.verticalLayout_4.addWidget(self.add)
 
@@ -239,58 +232,52 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addItem(self.verticalSpacer)
 
-        self.verticalLayout_4.setStretch(5, 1)
-
-        self.horizontalLayout.addLayout(self.verticalLayout_4)
-
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.verticalLayout_3.setContentsMargins(-1, -1, 0, -1)
-        self.horizontalLayout_5 = QHBoxLayout()
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.label_actions = QLabel(self.centralwidget)
-        self.label_actions.setObjectName(u"label_actions")
-
-        self.horizontalLayout_5.addWidget(self.label_actions)
-
-        self.horizontalSpacer_actions = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.horizontalLayout_5.addItem(self.horizontalSpacer_actions)
-
-        self.down = QToolButton(self.centralwidget)
+        self.Actions = QGroupBox(self.centralwidget)
+        self.Actions.setObjectName(u"Actions")
+        self.verticalLayout_5 = QVBoxLayout(self.Actions)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.horizontalLayout_7 = QHBoxLayout()
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.down = QToolButton(self.Actions)
         self.down.setObjectName(u"down")
         icon = QIcon()
         icon.addFile(u"../art/down_arrow.png", QSize(), QIcon.Normal, QIcon.Off)
         self.down.setIcon(icon)
+        self.down.setCheckable(True)
 
-        self.horizontalLayout_5.addWidget(self.down)
+        self.horizontalLayout_7.addWidget(self.down)
 
-        self.up = QToolButton(self.centralwidget)
+        self.up = QToolButton(self.Actions)
         self.up.setObjectName(u"up")
         icon1 = QIcon()
         icon1.addFile(u"../art/up_arrow.png", QSize(), QIcon.Normal, QIcon.Off)
         self.up.setIcon(icon1)
+        self.up.setCheckable(True)
+        self.up.setChecked(False)
 
-        self.horizontalLayout_5.addWidget(self.up)
+        self.horizontalLayout_7.addWidget(self.up)
 
-        self.remove = QToolButton(self.centralwidget)
+        self.horizontalSpacer_actions = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_7.addItem(self.horizontalSpacer_actions)
+
+        self.remove = QToolButton(self.Actions)
         self.remove.setObjectName(u"remove")
         icon2 = QIcon()
         icon2.addFile(u"../art/trash.png", QSize(), QIcon.Normal, QIcon.Off)
         self.remove.setIcon(icon2)
 
-        self.horizontalLayout_5.addWidget(self.remove)
+        self.horizontalLayout_7.addWidget(self.remove)
 
 
-        self.verticalLayout_3.addLayout(self.horizontalLayout_5)
-
-        self.listWidget = QListWidget(self.centralwidget)
-        self.listWidget.setObjectName(u"listWidget")
-
-        self.verticalLayout_3.addWidget(self.listWidget)
+        self.verticalLayout_5.addLayout(self.horizontalLayout_7)
 
 
-        self.horizontalLayout.addLayout(self.verticalLayout_3)
+        self.verticalLayout_4.addWidget(self.Actions)
+
+        self.verticalLayout_4.setStretch(1, 1)
+
+        self.horizontalLayout.addLayout(self.verticalLayout_4)
 
         self.horizontalLayout.setStretch(0, 3)
         self.horizontalLayout.setStretch(1, 2)
@@ -303,7 +290,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1053, 22))
+        self.menubar.setGeometry(QRect(0, 0, 968, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
@@ -346,15 +333,13 @@ class Ui_MainWindow(object):
         self.pages.setTabText(self.pages.indexOf(self.tab_10), QCoreApplication.translate("MainWindow", u"10", None))
         self.text.setInputMask("")
         self.text.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Button text", None))
-        self.top.setText(QCoreApplication.translate("MainWindow", u"Top", None))
-        self.middle.setText(QCoreApplication.translate("MainWindow", u"Middle", None))
-        self.bottom.setText(QCoreApplication.translate("MainWindow", u"Bottom", None))
+        self.toolButton_3.setText(QCoreApplication.translate("MainWindow", u"\u23af", None))
+        self.toolButton.setText(QCoreApplication.translate("MainWindow", u"\u2500", None))
+        self.toolButton_2.setText(QCoreApplication.translate("MainWindow", u"\u203e", None))
         self.image.setText(QCoreApplication.translate("MainWindow", u"...", None))
-        self.select_action.setItemText(0, QCoreApplication.translate("MainWindow", u"Select an action", None))
-
         self.label.setText(QCoreApplication.translate("MainWindow", u"Select an **action** to perform from the list above, and configure the action here. Add it to the list of actions to perform, and you're all set!", None))
-        self.add.setText(QCoreApplication.translate("MainWindow", u"Add to list  >", None))
-        self.label_actions.setText(QCoreApplication.translate("MainWindow", u"Actions:", None))
+        self.add.setText(QCoreApplication.translate("MainWindow", u"Add to actions", None))
+        self.Actions.setTitle(QCoreApplication.translate("MainWindow", u"Actions", None))
         self.down.setText(QCoreApplication.translate("MainWindow", u"\u2b06\ufe0f", None))
         self.up.setText(QCoreApplication.translate("MainWindow", u"...", None))
         self.remove.setText(QCoreApplication.translate("MainWindow", u"...", None))
