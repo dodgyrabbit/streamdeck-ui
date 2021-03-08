@@ -2,6 +2,7 @@
 import os
 import sys
 import time
+import importlib
 from functools import partial
 
 from PySide2 import QtWidgets
@@ -25,7 +26,6 @@ from streamdeck_ui import api
 from streamdeck_ui.config import LOGO, PROJECT_PATH, STATE_FILE
 from streamdeck_ui.ui_main import Ui_MainWindow
 from streamdeck_ui.preferences import Ui_Dialog
-from streamdeck_ui.ui_action_command import Ui_action_command
 
 BUTTON_STYLE = """
     QToolButton{background-color:black; color:white;}
@@ -198,13 +198,13 @@ def button_clicked(ui, clicked_button, buttons) -> None:
     deck_id = _deck_id(ui)
     button_id = selected_button.index
     ui.text.setText(api.get_button_text(deck_id, _page(ui), button_id))
-    ui.command.setText(api.get_button_command(deck_id, _page(ui), button_id))
-    ui.keys.setText(api.get_button_keys(deck_id, _page(ui), button_id))
-    ui.write.setPlainText(api.get_button_write(deck_id, _page(ui), button_id))
-    ui.change_brightness.setValue(api.get_button_change_brightness(deck_id, _page(ui), button_id))
-    ui.switch_page.setValue(api.get_button_switch_page(deck_id, _page(ui), button_id))
-    ui.obs_scene.setText(api.get_button_obs_scene(deck_id, _page(ui), button_id))
-    ui.kasa_plug_ip.setText(api.get_button_kasa_plug_ip(deck_id, _page(ui), button_id))
+#    ui.command.setText(api.get_button_command(deck_id, _page(ui), button_id))
+#    ui.keys.setText(api.get_button_keys(deck_id, _page(ui), button_id))
+#    ui.write.setPlainText(api.get_button_write(deck_id, _page(ui), button_id))
+#    ui.change_brightness.setValue(api.get_button_change_brightness(deck_id, _page(ui), button_id))
+#    ui.switch_page.setValue(api.get_button_switch_page(deck_id, _page(ui), button_id))
+#    ui.obs_scene.setText(api.get_button_obs_scene(deck_id, _page(ui), button_id))
+#    ui.kasa_plug_ip.setText(api.get_button_kasa_plug_ip(deck_id, _page(ui), button_id))
 
 def build_buttons(ui, tab) -> None:
     deck_id = _deck_id(ui)
@@ -293,15 +293,6 @@ def build_device(ui, _device_index=None) -> None:
     _highlight_first_button(ui)
 
 
-class ActionCommand(QWidget):
-    def __init__(self, parent):
-        QtWidgets.QWidget.__init__(self, parent)
-        #super(Ui_action_command, self).__init__(parent)
-        self.ui = Ui_action_command()
-        self.ui.setupUi(self)
-        self.show()
-
-
 class PreferencesDialog(QDialog):
     def __init__(self, parent):
 
@@ -319,40 +310,31 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.window_shown: bool = True
-        
-        # Replace the help text with mine
-        old = self.ui.plugin.takeAt(0)
-        old.widget().deleteLater()
-        self.ui.plugin.addWidget(ActionCommand(self))
-
-        # TODO: Dynamically load this
         self.ui.tree.setHeaderLabels([""])
+
+        # TODO: Iterate over modules and dynamically add all of them
+        command_module = importlib.import_module('streamdeck_ui.plugins.command.action')
+        print(command_module)
+
         tree_widget_item1 = QTreeWidgetItem(["Keyboard"])
         tree_widget_item1.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
         tree_widget_item1.setExpanded(True)
 
-        run_command = QTreeWidgetItem(["Run command"])
-        run_command.setIcon(0, QIcon("streamdeck_ui/terminal_24.png"))
+        action = command_module.Action()
+        run_command = QTreeWidgetItem([action.get_name()])
+        run_command.setIcon(0, action.get_icon())
         tree_widget_item1.addChild(run_command)
 
-        shortcut_keys = QTreeWidgetItem(["Shortcut keys"])
-        shortcut_keys.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
-        tree_widget_item1.addChild(shortcut_keys)
+        # TODO: passing the action doesn't make sense. The action needs to be determined
+        #       by the slot which handles the event
+        self.ui.tree.itemClicked.connect(partial(self.load_plugin_ui, action))
 
-        write_text = QTreeWidgetItem(["Write text"])
-        write_text.setIcon(0, QIcon("streamdeck_ui/text_24.png"))
-        tree_widget_item1.addChild(write_text)
-        
-        tree_widget_item2 = QTreeWidgetItem(["OBS"])
-        tree_widget_item2.addChild(QTreeWidgetItem(["Change scene"]))
-        tree_widget_item3 = QTreeWidgetItem(["Kasa"])
-        tree_widget_item3.addChild(QTreeWidgetItem(["Toggle light switch"]))
-        tree_widget_item4 = QTreeWidgetItem(["Stream Deck"])
-        tree_widget_item4.addChild(QTreeWidgetItem(["Change brightness"]))
         self.ui.tree.addTopLevelItem(tree_widget_item1)
-        self.ui.tree.addTopLevelItem(tree_widget_item2)
-        self.ui.tree.addTopLevelItem(tree_widget_item3)
-        self.ui.tree.addTopLevelItem(tree_widget_item4)
+
+    def load_plugin_ui(self, action, item, column):
+        old = self.ui.plugin.takeAt(0)
+        old.widget().deleteLater()
+        self.ui.plugin.addWidget(action.get_ui(self, None))
 
     def closeEvent(self, event) -> None:  # noqa: N802 - Part of QT signature.
         self.window_shown = False
@@ -407,6 +389,8 @@ def start(_exit: bool = False) -> None:
 
     tray.setContextMenu(menu)
 
+    # TODO: load a list of actions
+
     #ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
     #ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
     #ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
@@ -415,8 +399,8 @@ def start(_exit: bool = False) -> None:
     #ui.keys.textChanged.connect(partial(update_button_keys, ui))
     #ui.write.textChanged.connect(partial(update_button_write, ui))
     #ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
-    #ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
-    #ui.imageButton.clicked.connect(partial(select_image, main_window))
+    ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
+    ui.imageButton.clicked.connect(partial(select_image, main_window))
     #ui.brightness.valueChanged.connect(partial(set_brightness, ui))
 
     items = api.open_decks().items()
