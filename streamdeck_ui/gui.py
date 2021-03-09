@@ -322,20 +322,13 @@ class MainWindow(QMainWindow):
         for module in self.plugins:
             action = module.Action()
             tree_item = QTreeWidgetItem([action.get_name()])
-            print(action.get_name())
             tree_item.setIcon(0, action.get_icon())
             tree_widget_item1.addChild(tree_item)
-            #tree_item.setData(0, 0, action)
+            # Use the UserRole to associate the action object with the QTreeWidgetItem.
+            # This can be used to retrieve a reference to the action in the event handler.
+            tree_item.setData(0, Qt.UserRole, action)
 
-        #action = command_module.Action()
-        #run_command = QTreeWidgetItem([action.get_name()])
-        #run_command.setIcon(0, action.get_icon())
-        #tree_widget_item1.addChild(run_command)
-
-        # TODO: passing the action doesn't make sense. The action needs to be determined
-        #       by the slot which handles the event
         self.ui.tree.itemClicked.connect(self.load_plugin_ui)
-
         self.ui.tree.addTopLevelItem(tree_widget_item1)
 
     def load_plugin_ui(self, item, column):
@@ -344,8 +337,9 @@ class MainWindow(QMainWindow):
         if old:
             old.widget().deleteLater()
 
-        #action = item.data(0, 0)
-        #self.ui.plugin.addWidget(action.get_ui(self, None))
+        action = item.data(0, Qt.UserRole)
+        if action:
+            self.ui.plugin.addWidget(action.get_ui(self, None))
 
     def closeEvent(self, event) -> None:  # noqa: N802 - Part of QT signature.
         self.window_shown = False
@@ -394,16 +388,6 @@ def load_plugins() -> None:
                 module = importlib.import_module(module_name)
                 plugins.append(module)
     return plugins
-
-    #             module = importlib.import_module(moduleStr)
-                     
-    #             # Look for classes that implements Plugin class
-    #             for name in dir(module) :
-    #             obj = getattr(module, name)
-                
-    #             if isinstance(obj, type) and issubclass(obj, Plugin) :
-    #                 # Remember plugin
-    #                 self.__plugins_list.append(obj())
 
 
 def start(_exit: bool = False) -> None:
