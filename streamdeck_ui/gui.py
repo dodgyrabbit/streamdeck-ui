@@ -384,19 +384,14 @@ def load_plugins() -> None:
 
     print(os.path.basename(plugin_path))
 
-    for subFolderRoot, foldersWithinSubFolder, files in os.walk(plugin_path):
-         for file in files:
-             if os.path.basename(file) == "action.py":
-
+    for sub_folder_root, _folder_in_folder, files in os.walk(plugin_path):
+        for file in files:
+            if os.path.basename(file) == "action.py":
                 # Import the relevant module (note: a module does not end with .py)
-                moduleDirectory = os.path.join(subFolderRoot, os.path.splitext(file)[0])
-                moduleStr = moduleDirectory.replace(os.path.sep, '.')
-
-                print(moduleStr)
-                print(moduleStr.find("streamdeck_ui"))
-                moduleStr = moduleStr[moduleStr.find("streamdeck_ui"):]
-
-                module = importlib.import_module(moduleStr)
+                module_path = os.path.join(sub_folder_root, os.path.splitext(file)[0])
+                module_name = module_path.replace(os.path.sep, '.')
+                module_name = module_name[module_name.find("streamdeck_ui"):]
+                module = importlib.import_module(module_name)
                 plugins.append(module)
     return plugins
 
