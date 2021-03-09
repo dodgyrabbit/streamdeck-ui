@@ -42,6 +42,8 @@ BUTTON_DRAG_STYLE = """
 selected_button: QtWidgets.QToolButton
 text_timer = None
 
+plugins = []
+
 
 class DraggableButton(QtWidgets.QToolButton):
     """A QToolButton that supports drag and drop and swaps the button properties on drop """
@@ -305,36 +307,45 @@ class PreferencesDialog(QDialog):
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, plugins):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.window_shown: bool = True
+        self.plugins = plugins
         self.ui.tree.setHeaderLabels([""])
-
-        # TODO: Iterate over modules and dynamically add all of them
-        command_module = importlib.import_module('streamdeck_ui.plugins.command.action')
-        print(command_module)
 
         tree_widget_item1 = QTreeWidgetItem(["Keyboard"])
         tree_widget_item1.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
         tree_widget_item1.setExpanded(True)
 
-        action = command_module.Action()
-        run_command = QTreeWidgetItem([action.get_name()])
-        run_command.setIcon(0, action.get_icon())
-        tree_widget_item1.addChild(run_command)
+        for module in self.plugins:
+            action = module.Action()
+            tree_item = QTreeWidgetItem([action.get_name()])
+            print(action.get_name())
+            tree_item.setIcon(0, action.get_icon())
+            tree_widget_item1.addChild(tree_item)
+            #tree_item.setData(0, 0, action)
+
+        #action = command_module.Action()
+        #run_command = QTreeWidgetItem([action.get_name()])
+        #run_command.setIcon(0, action.get_icon())
+        #tree_widget_item1.addChild(run_command)
 
         # TODO: passing the action doesn't make sense. The action needs to be determined
         #       by the slot which handles the event
-        self.ui.tree.itemClicked.connect(partial(self.load_plugin_ui, action))
+        self.ui.tree.itemClicked.connect(self.load_plugin_ui)
 
         self.ui.tree.addTopLevelItem(tree_widget_item1)
 
-    def load_plugin_ui(self, action, item, column):
+    def load_plugin_ui(self, item, column):
+        # Remove the old widget
         old = self.ui.plugin.takeAt(0)
-        old.widget().deleteLater()
-        self.ui.plugin.addWidget(action.get_ui(self, None))
+        if old:
+            old.widget().deleteLater()
+
+        #action = item.data(0, 0)
+        #self.ui.plugin.addWidget(action.get_ui(self, None))
 
     def closeEvent(self, event) -> None:  # noqa: N802 - Part of QT signature.
         self.window_shown = False
@@ -365,7 +376,45 @@ def queue_text_change(ui, text: str) -> None:
     text_timer.start(500)
 
 
+def load_plugins() -> None:
+    # __file__ is the path the the current module (including file name)
+    plugins = []
+    current_path = os.path.dirname(os.path.realpath(__file__))
+    plugin_path = os.path.join(current_path, "plugins")
+
+    print(os.path.basename(plugin_path))
+
+    for subFolderRoot, foldersWithinSubFolder, files in os.walk(plugin_path):
+         for file in files:
+             if os.path.basename(file) == "action.py":
+
+                # Import the relevant module (note: a module does not end with .py)
+                moduleDirectory = os.path.join(subFolderRoot, os.path.splitext(file)[0])
+                moduleStr = moduleDirectory.replace(os.path.sep, '.')
+
+                print(moduleStr)
+                print(moduleStr.find("streamdeck_ui"))
+                moduleStr = moduleStr[moduleStr.find("streamdeck_ui"):]
+
+                module = importlib.import_module(moduleStr)
+                plugins.append(module)
+    return plugins
+
+    #             module = importlib.import_module(moduleStr)
+                     
+    #             # Look for classes that implements Plugin class
+    #             for name in dir(module) :
+    #             obj = getattr(module, name)
+                
+    #             if isinstance(obj, type) and issubclass(obj, Plugin) :
+    #                 # Remember plugin
+    #                 self.__plugins_list.append(obj())
+
+
 def start(_exit: bool = False) -> None:
+
+    plugins = load_plugins()
+
     app = QApplication(sys.argv)
 
     first_start = False
@@ -373,7 +422,7 @@ def start(_exit: bool = False) -> None:
         first_start = True
 
     logo = QIcon(LOGO)
-    main_window = MainWindow()
+    main_window = MainWindow(plugins)
     ui = main_window.ui
     main_window.setWindowIcon(logo)
     tray = QSystemTrayIcon(logo, app)
@@ -399,8 +448,8 @@ def start(_exit: bool = False) -> None:
     #ui.keys.textChanged.connect(partial(update_button_keys, ui))
     #ui.write.textChanged.connect(partial(update_button_write, ui))
     #ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
-    ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
-    ui.imageButton.clicked.connect(partial(select_image, main_window))
+    #ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
+    #ui.imageButton.clicked.connect(partial(select_image, main_window))
     #ui.brightness.valueChanged.connect(partial(set_brightness, ui))
 
     items = api.open_decks().items()
