@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import importlib
+import inspect
 from functools import partial
 
 from PySide2 import QtWidgets
@@ -26,6 +27,7 @@ from streamdeck_ui import api
 from streamdeck_ui.config import LOGO, PROJECT_PATH, STATE_FILE
 from streamdeck_ui.ui_main import Ui_MainWindow
 from streamdeck_ui.preferences import Ui_Dialog
+from streamdeck_ui.plugin import Plugin
 
 BUTTON_STYLE = """
     QToolButton{background-color:black; color:white;}
@@ -298,7 +300,7 @@ def build_device(ui, _device_index=None) -> None:
 class PreferencesDialog(QDialog):
     def __init__(self, parent):
 
-        # TODO: These two statements seem equivalent
+        # FIXME: These two statements seem equivalent
         QDialog.__init__(self, parent)
         #super(PreferencesDialog, self).__init__(parent)
         self.ui = Ui_Dialog()
@@ -314,13 +316,14 @@ class MainWindow(QMainWindow):
         self.window_shown: bool = True
         self.plugins = plugins
         self.ui.tree.setHeaderLabels([""])
+        self.help_item = self.ui.plugin.itemAt(0)
 
+        # TODO: Auto categorise based on dynamic module properties
         tree_widget_item1 = QTreeWidgetItem(["Keyboard"])
         tree_widget_item1.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
         tree_widget_item1.setExpanded(True)
 
-        for module in self.plugins:
-            action = module.Action()
+        for action in self.plugins:
             tree_item = QTreeWidgetItem([action.get_name()])
             tree_item.setIcon(0, action.get_icon())
             tree_widget_item1.addChild(tree_item)
@@ -376,17 +379,20 @@ def load_plugins() -> None:
     current_path = os.path.dirname(os.path.realpath(__file__))
     plugin_path = os.path.join(current_path, "plugins")
 
-    print(os.path.basename(plugin_path))
-
     for sub_folder_root, _folder_in_folder, files in os.walk(plugin_path):
         for file in files:
-            if os.path.basename(file) == "action.py":
+            if os.path.basename(file).endswith("py"):
                 # Import the relevant module (note: a module does not end with .py)
                 module_path = os.path.join(sub_folder_root, os.path.splitext(file)[0])
                 module_name = module_path.replace(os.path.sep, '.')
                 module_name = module_name[module_name.find("streamdeck_ui"):]
                 module = importlib.import_module(module_name)
-                plugins.append(module)
+
+                # Look for classes that implements Plugin class
+                for name in dir(module):
+                    obj = getattr(module, name)
+                    if isinstance(obj, type) and issubclass(obj, Plugin) and not inspect.isabstract(obj):
+                        plugins.append(obj())
     return plugins
 
 

@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(968, 517)
+        MainWindow.resize(884, 517)
         self.actionImport = QAction(MainWindow)
         self.actionImport.setObjectName(u"actionImport")
         self.actionExport = QAction(MainWindow)
@@ -197,7 +197,10 @@ class Ui_MainWindow(object):
         __qtreewidgetitem.setText(0, u"1");
         self.tree.setHeaderItem(__qtreewidgetitem)
         self.tree.setObjectName(u"tree")
+        self.tree.setMinimumSize(QSize(0, 150))
+        self.tree.setMaximumSize(QSize(16777215, 150))
         self.tree.setIconSize(QSize(24, 24))
+        self.tree.setTextElideMode(Qt.ElideLeft)
         self.tree.setHeaderHidden(True)
 
         self.verticalLayout_4.addWidget(self.tree)
@@ -205,7 +208,7 @@ class Ui_MainWindow(object):
         self.plugin = QVBoxLayout()
         self.plugin.setSpacing(0)
         self.plugin.setObjectName(u"plugin")
-        self.plugin.setContentsMargins(-1, 20, -1, 20)
+        self.plugin.setContentsMargins(-1, 0, -1, 0)
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
@@ -275,7 +278,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.Actions)
 
-        self.verticalLayout_4.setStretch(1, 1)
+        self.verticalLayout_4.setStretch(4, 1)
 
         self.horizontalLayout.addLayout(self.verticalLayout_4)
 
@@ -290,7 +293,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 968, 22))
+        self.menubar.setGeometry(QRect(0, 0, 884, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)

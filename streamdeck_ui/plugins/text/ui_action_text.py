@@ -21,13 +21,17 @@ class Ui_action_text(object):
         self.verticalLayout = QVBoxLayout(action_text)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.formLayout = QFormLayout()
-        self.formLayout.setObjectName(u"formLayout")
-        self.formLayout.setHorizontalSpacing(6)
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.label = QLabel(action_text)
         self.label.setObjectName(u"label")
 
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
+        self.verticalLayout_2.addWidget(self.label)
+
+        self.textEdit = QTextEdit(action_text)
+        self.textEdit.setObjectName(u"textEdit")
+
+        self.verticalLayout_2.addWidget(self.textEdit)
 
         self.label_2 = QLabel(action_text)
         self.label_2.setObjectName(u"label_2")
@@ -40,15 +44,10 @@ class Ui_action_text(object):
         self.label_2.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.label_2.setWordWrap(True)
 
-        self.formLayout.setWidget(1, QFormLayout.SpanningRole, self.label_2)
-
-        self.textEdit = QTextEdit(action_text)
-        self.textEdit.setObjectName(u"textEdit")
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.textEdit)
+        self.verticalLayout_2.addWidget(self.label_2)
 
 
-        self.verticalLayout.addLayout(self.formLayout)
+        self.verticalLayout.addLayout(self.verticalLayout_2)
 
 
         self.retranslateUi(action_text)
