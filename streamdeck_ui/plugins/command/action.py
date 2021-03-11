@@ -1,6 +1,5 @@
 from PySide2.QtWidgets import QWidget
-from PySide2 import QtWidgets
-from streamdeck_ui.plugins.command.ui_action_command import Ui_action_command
+from streamdeck_ui.plugins.command.Ui_CommandWidget import Ui_CommandWidget
 from streamdeck_ui.plugin import Plugin
 
 
@@ -9,13 +8,12 @@ class Action(Plugin):
         super().__init__("Run command", "Keyboard", __file__)
 
     def get_ui(self, parent, settings):
-        return ActionCommand(parent)
+        return CommandWidget(parent)
 
 
-class ActionCommand(QWidget):
+class CommandWidget(QWidget):
     def __init__(self, parent):
-        QtWidgets.QWidget.__init__(self, parent)
-        #super(Ui_action_command, self).__init__(parent)
-        self.ui = Ui_action_command()
+        super().__init__(parent)
+        self.ui = Ui_CommandWidget()
         self.ui.setupUi(self)
         self.show()

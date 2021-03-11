@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'action_command.ui'
+## Form generated from reading UI file 'CommandWidget.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.2
 ##
@@ -13,28 +13,28 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
-class Ui_action_command(object):
-    def setupUi(self, action_command):
-        if not action_command.objectName():
-            action_command.setObjectName(u"action_command")
-        action_command.resize(414, 287)
-        self.verticalLayout = QVBoxLayout(action_command)
+class Ui_CommandWidget(object):
+    def setupUi(self, command_widget):
+        if not command_widget.objectName():
+            command_widget.setObjectName(u"command_widget")
+        command_widget.resize(414, 287)
+        self.verticalLayout = QVBoxLayout(command_widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.formLayout = QFormLayout()
         self.formLayout.setObjectName(u"formLayout")
         self.formLayout.setHorizontalSpacing(6)
-        self.label = QLabel(action_command)
+        self.label = QLabel(command_widget)
         self.label.setObjectName(u"label")
 
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
 
-        self.command = QLineEdit(action_command)
+        self.command = QLineEdit(command_widget)
         self.command.setObjectName(u"command")
 
         self.formLayout.setWidget(0, QFormLayout.FieldRole, self.command)
 
-        self.label_2 = QLabel(action_command)
+        self.label_2 = QLabel(command_widget)
         self.label_2.setObjectName(u"label_2")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -51,14 +51,14 @@ class Ui_action_command(object):
         self.verticalLayout.addLayout(self.formLayout)
 
 
-        self.retranslateUi(action_command)
+        self.retranslateUi(command_widget)
 
-        QMetaObject.connectSlotsByName(action_command)
+        QMetaObject.connectSlotsByName(command_widget)
     # setupUi
 
-    def retranslateUi(self, action_command):
-        action_command.setWindowTitle(QCoreApplication.translate("action_command", u"Form", None))
-        self.label.setText(QCoreApplication.translate("action_command", u"Command:", None))
-        self.label_2.setText(QCoreApplication.translate("action_command", u"Use the **command** action to run a program on your computer. For example, type **code** to launch Visual Studio Code (assuming you have it installed of course!)", None))
+    def retranslateUi(self, command_widget):
+        command_widget.setWindowTitle(QCoreApplication.translate("CommandWidget", u"Form", None))
+        self.label.setText(QCoreApplication.translate("CommandWidget", u"Command:", None))
+        self.label_2.setText(QCoreApplication.translate("CommandWidget", u"Use the **command** action to run a program on your computer. For example, type **code** to launch Visual Studio Code (assuming you have it installed of course!)", None))
     # retranslateUi
 

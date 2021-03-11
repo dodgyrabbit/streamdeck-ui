@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>action_command</class>
- <widget class="QWidget" name="action_command">
+ <class>text</class>
+ <widget class="QWidget" name="text">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -27,21 +27,18 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QFormLayout" name="formLayout">
-     <property name="horizontalSpacing">
-      <number>6</number>
-     </property>
-     <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Command:</string>
+        <string>Text:</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="command"/>
+     <item>
+      <widget class="QTextEdit" name="textEdit"/>
      </item>
-     <item row="1" column="0" colspan="2">
+     <item>
       <widget class="QLabel" name="label_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -50,7 +47,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Use the **command** action to run a program on your computer. For example, type **code** to launch Visual Studio Code (assuming you have it installed of course!)</string>
+        <string>Use the **text** action to type the text provided. It will simulate the keyboard typing the text, so you can use it in any program. For example, a common Email or document template.</string>
        </property>
        <property name="textFormat">
         <enum>Qt::MarkdownText</enum>

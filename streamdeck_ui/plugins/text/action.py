@@ -1,9 +1,6 @@
 from PySide2.QtWidgets import QWidget
-from PySide2 import QtWidgets
-from streamdeck_ui.plugins.text.ui_action_text import Ui_action_text
-from PySide2.QtGui import QIcon
+from streamdeck_ui.plugins.text.ui_text import Ui_text
 from streamdeck_ui.plugin import Plugin
-import os
 
 
 class Action(Plugin):
@@ -11,13 +8,12 @@ class Action(Plugin):
         super().__init__("Type text", "Keyboard", __file__)
 
     def get_ui(self, parent, settings):
-        return ActionText(parent)
+        return TextWidget(parent)
 
 
-class ActionText(QWidget):
+class TextWidget(QWidget):
     def __init__(self, parent):
-        QtWidgets.QWidget.__init__(self, parent)
-        #super(Ui_action_command, self).__init__(parent)
-        self.ui = Ui_action_text()
+        super().__init__(parent)
+        self.ui = Ui_text()
         self.ui.setupUi(self)
         self.show()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>action_text</class>
- <widget class="QWidget" name="action_text">
+ <class>CommandWidget</class>
+ <widget class="QWidget" name="command_widget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -27,18 +27,21 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="horizontalSpacing">
+      <number>6</number>
+     </property>
+     <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Text:</string>
+        <string>Command:</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QTextEdit" name="textEdit"/>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="command"/>
      </item>
-     <item>
+     <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="label_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -47,7 +50,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Use the **text** action to type the text provided. It will simulate the keyboard typing the text, so you can use it in any program. For example, a common Email or document template.</string>
+        <string>Use the **command** action to run a program on your computer. For example, type **code** to launch Visual Studio Code (assuming you have it installed of course!)</string>
        </property>
        <property name="textFormat">
         <enum>Qt::MarkdownText</enum>
