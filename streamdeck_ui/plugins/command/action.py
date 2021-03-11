@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QWidget
-from streamdeck_ui.plugins.command.Ui_CommandWidget import Ui_CommandWidget
+from streamdeck_ui.plugins.command.ui_commandwidget import Ui_CommandWidget
 from streamdeck_ui.plugin import Plugin
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>CommandWidget</class>
- <widget class="QWidget" name="command_widget">
+ <widget class="QWidget" name="CommandWidget">
   <property name="geometry">
    <rect>
     <x>0</x>

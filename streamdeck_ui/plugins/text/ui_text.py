@@ -13,27 +13,27 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
-class Ui_text(object):
-    def setupUi(self, text):
-        if not text.objectName():
-            text.setObjectName(u"text")
-        text.resize(414, 287)
-        self.verticalLayout = QVBoxLayout(text)
+class Ui_TextWidget(object):
+    def setupUi(self, text_widget):
+        if not text_widget.objectName():
+            text_widget.setObjectName(u"text_widget")
+        text_widget.resize(414, 287)
+        self.verticalLayout = QVBoxLayout(text_widget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label = QLabel(text)
+        self.label = QLabel(text_widget)
         self.label.setObjectName(u"label")
 
         self.verticalLayout_2.addWidget(self.label)
 
-        self.textEdit = QTextEdit(text)
+        self.textEdit = QTextEdit(text_widget)
         self.textEdit.setObjectName(u"textEdit")
 
         self.verticalLayout_2.addWidget(self.textEdit)
 
-        self.label_2 = QLabel(text)
+        self.label_2 = QLabel(text_widget)
         self.label_2.setObjectName(u"label_2")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -50,14 +50,14 @@ class Ui_text(object):
         self.verticalLayout.addLayout(self.verticalLayout_2)
 
 
-        self.retranslateUi(text)
+        self.retranslateUi(text_widget)
 
-        QMetaObject.connectSlotsByName(text)
+        QMetaObject.connectSlotsByName(text_widget)
     # setupUi
 
-    def retranslateUi(self, text):
-        text.setWindowTitle(QCoreApplication.translate("text", u"Form", None))
-        self.label.setText(QCoreApplication.translate("text", u"Text:", None))
-        self.label_2.setText(QCoreApplication.translate("text", u"Use the **text** action to type the text provided. It will simulate the keyboard typing the text, so you can use it in any program. For example, a common Email or document template.", None))
+    def retranslateUi(self, text_widget):
+        text_widget.setWindowTitle(QCoreApplication.translate("TextWidget", u"Form", None))
+        self.label.setText(QCoreApplication.translate("TextWidget", u"Text:", None))
+        self.label_2.setText(QCoreApplication.translate("TextWidget", u"Use the **text** action to type the text provided. It will simulate the keyboard typing the text, so you can use it in any program. For example, a common Email or document template.", None))
     # retranslateUi
 

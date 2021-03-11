@@ -1,5 +1,5 @@
 from PySide2.QtWidgets import QWidget
-from streamdeck_ui.plugins.text.ui_text import Ui_text
+from streamdeck_ui.plugins.text.ui_text import Ui_TextWidget
 from streamdeck_ui.plugin import Plugin
 
 
@@ -14,6 +14,6 @@ class Action(Plugin):
 class TextWidget(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        self.ui = Ui_text()
+        self.ui = Ui_TextWidget()
         self.ui.setupUi(self)
         self.show()
