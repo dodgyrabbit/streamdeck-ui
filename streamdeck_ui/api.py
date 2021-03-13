@@ -21,7 +21,7 @@ from obswebsocket import obsws, requests
 import asyncio
 from kasa import SmartPlug
 
-image_cache: Dict[str, memoryview] = {}
+image_cache: Dict[str, object] = {}
 decks: Dict[str, StreamDeck.StreamDeck] = {}
 state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = {}
 
@@ -203,6 +203,7 @@ def swap_buttons(deck_id: str, page: int, source_button: int, target_button: int
     _save_state()
     render()
 
+
 def set_button_text(deck_id: str, page: int, button: int, text: str) -> None:
     """Set the text associated with a button"""
     _button_state(deck_id, page, button)["text"] = text
@@ -223,10 +224,23 @@ def set_button_icon(deck_id: str, page: int, button: int, icon: str) -> None:
     render()
     _save_state()
 
+# FIXME: A number of issues to deal with here
+# A get method should not have side effects
+# Create secondary cache or move into different
+# module to deal with QImage 
+
+#def get_button_icon(deck_id: str, page: int, button: int) -> str:
+#    """Returns the icon set for a particular button"""
+#    return _button_state(deck_id, page, button).get("icon", "")
 
 def get_button_icon(deck_id: str, page: int, button: int) -> str:
     """Returns the icon set for a particular button"""
-    return _button_state(deck_id, page, button).get("icon", "")
+    key = f"{deck_id}.{page}.{button}"
+    if key not in image_cache:
+        print("Didn't find it in cache")
+        render()
+    print(f"From cache: {key}")
+    return image_cache[key]
 
 
 def set_button_change_brightness(deck_id: str, page: int, button: int, amount: int) -> None:
@@ -354,11 +368,15 @@ def render() -> None:
             else:
                 image = _render_key_image(deck, **button_settings)
                 image_cache[key] = image
-            deck.set_key_image(button_id, image)
+
+            # FIXME: don't want to do the conversion each time, but for now
+            # keep image in PIL format
+            deck.set_key_image(button_id, ImageHelpers.PILHelper.to_native_format(deck, image))
 
 
 def _render_key_image(deck, icon: str = "", text: str = "", font: str = DEFAULT_FONT, **kwargs):
-    """Renders an individual key image"""
+    """Renders an individual key image and returns
+    it as a PIL image"""
     image = ImageHelpers.PILHelper.create_image(deck)
     draw = ImageDraw.Draw(image)
 
@@ -384,7 +402,7 @@ def _render_key_image(deck, icon: str = "", text: str = "", font: str = DEFAULT_
             label_pos = ((image.width - label_w) // 2, (image.height // 2) - 7)
         draw.text(label_pos, text=text, font=true_font, fill="white")
 
-    return ImageHelpers.PILHelper.to_native_format(deck, image)
+    return image
 
 
 if os.path.isfile(STATE_FILE):

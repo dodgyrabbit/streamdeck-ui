@@ -8,7 +8,7 @@ from functools import partial
 
 from PySide2 import QtWidgets
 from PySide2.QtCore import QSize, Qt, QTimer, QMimeData
-from PySide2.QtGui import QIcon, QDrag
+from PySide2.QtGui import QIcon, QDrag, QPixmap, QImage
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (
     QAction,
@@ -20,8 +20,8 @@ from PySide2.QtWidgets import (
     QSystemTrayIcon,
     QDialog,
     QTreeWidgetItem,
-    QWidget
-)
+    QWidget,
+    QSpacerItem)
 
 from streamdeck_ui import api
 from streamdeck_ui.config import LOGO, PROJECT_PATH, STATE_FILE
@@ -29,16 +29,30 @@ from streamdeck_ui.ui_main import Ui_MainWindow
 from streamdeck_ui.preferences import Ui_Dialog
 from streamdeck_ui.plugin import Plugin
 
+from PIL.ImageQt import ImageQt
+
 BUTTON_STYLE = """
-    QToolButton{background-color:black; color:white;}
-    QToolButton:checked{background-color:darkGray; color:black;}
-    QToolButton:focus{border:none; }
+    QToolButton { 
+    margin: 8px;
+    border: 6px solid #444444;
+    border-radius: 8px;
+    background-color: #000000;
+    border-style: outset;}
+    QToolButton:checked { 
+    margin: 8px;
+    border: 6px solid #cccccc;
+    border-radius: 8px;
+    background-color: #000000;
+    border-style: outset;}
 """
 
 BUTTON_DRAG_STYLE = """
-    QToolButton{background-color:white; color:black;}
-    QToolButton:checked{background-color:darkGray; color:black;}
-    QToolButton:focus{border:none; }
+    QToolButton { 
+    margin: 8px;
+    border: 6px solid #999999;
+    border-radius: 8px;
+    background-color: #000000;
+    border-style: outset;}
 """
 
 selected_button: QtWidgets.QToolButton
@@ -177,7 +191,13 @@ def redraw_buttons(ui) -> None:
     buttons = current_tab.findChildren(QtWidgets.QToolButton)
     for button in buttons:
         button.setText(api.get_button_text(deck_id, _page(ui), button.index))
-        button.setIcon(QIcon(api.get_button_icon(deck_id, _page(ui), button.index)))
+
+        # TODO: avoid conversion each time
+        image = ImageQt(api.get_button_icon(deck_id, _page(ui), button.index))
+        image = image.convertToFormat(QImage.Format_ARGB32)
+        pixmap = QPixmap.fromImage(image)
+        icon = QIcon(pixmap)
+        button.setIcon(icon)
 
 
 def set_brightness(ui, value: int) -> None:
@@ -202,6 +222,16 @@ def button_clicked(ui, clicked_button, buttons) -> None:
     deck_id = _deck_id(ui)
     button_id = selected_button.index
     ui.text.setText(api.get_button_text(deck_id, _page(ui), button_id))
+
+    # TODO: Avoid creating image each time
+    ui.image.setText(api.get_button_text(deck_id, _page(ui), button_id))
+    image = ImageQt(api.get_button_icon(deck_id, _page(ui), button_id))
+    image = image.convertToFormat(QImage.Format_ARGB32)
+    pixmap = QPixmap(image)
+    ui.image.setIcon(QIcon(pixmap))
+
+    # TODO: Activate the relevant plugin
+
 #    ui.command.setText(api.get_button_command(deck_id, _page(ui), button_id))
 #    ui.keys.setText(api.get_button_keys(deck_id, _page(ui), button_id))
 #    ui.write.setPlainText(api.get_button_write(deck_id, _page(ui), button_id))
@@ -209,6 +239,7 @@ def button_clicked(ui, clicked_button, buttons) -> None:
 #    ui.switch_page.setValue(api.get_button_switch_page(deck_id, _page(ui), button_id))
 #    ui.obs_scene.setText(api.get_button_obs_scene(deck_id, _page(ui), button_id))
 #    ui.kasa_plug_ip.setText(api.get_button_kasa_plug_ip(deck_id, _page(ui), button_id))
+
 
 def build_buttons(ui, tab) -> None:
     deck_id = _deck_id(ui)
@@ -234,12 +265,15 @@ def build_buttons(ui, tab) -> None:
             button.setCheckable(True)
             button.index = index
             button.setSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
-            button.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-            button.setIconSize(QSize(100, 100))
+            button.setToolButtonStyle(Qt.ToolButtonIconOnly)
+            button.setIconSize(QSize(80, 80))
             button.setStyleSheet(BUTTON_STYLE)
             buttons.append(button)
             column_layout.addWidget(button)
             index += 1
+
+        column_layout.addStretch(1)
+    row_layout.addStretch(1)
 
     # Note that the button click event captures the ui variable, the current button
     #  and all the other buttons
@@ -428,7 +462,7 @@ def start(_exit: bool = False) -> None:
     #ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
     #ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
     #ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
-    #ui.text.textChanged.connect(partial(queue_text_change, ui))
+    ui.text.textChanged.connect(partial(queue_text_change, ui))
     #ui.command.textChanged.connect(partial(update_button_command, ui))
     #ui.keys.textChanged.connect(partial(update_button_keys, ui))
     #ui.write.textChanged.connect(partial(update_button_write, ui))

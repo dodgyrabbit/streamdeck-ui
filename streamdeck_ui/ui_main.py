@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(884, 517)
+        MainWindow.resize(887, 537)
         self.actionImport = QAction(MainWindow)
         self.actionImport.setObjectName(u"actionImport")
         self.actionExport = QAction(MainWindow)
@@ -178,6 +178,7 @@ class Ui_MainWindow(object):
         self.image.setObjectName(u"image")
         self.image.setMinimumSize(QSize(48, 48))
         self.image.setIconSize(QSize(64, 64))
+        self.image.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 
         self.verticalLayout_7.addWidget(self.image)
 
@@ -282,7 +283,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout_4)
 
-        self.horizontalLayout.setStretch(0, 3)
         self.horizontalLayout.setStretch(1, 2)
 
         self.verticalLayout.addLayout(self.horizontalLayout)
@@ -293,7 +293,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 884, 22))
+        self.menubar.setGeometry(QRect(0, 0, 887, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
