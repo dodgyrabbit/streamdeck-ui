@@ -1,11 +1,10 @@
 """Defines the Python API for interacting with the StreamDeck Configuration UI"""
 import json
 import os
-import threading
 from functools import partial
 import shlex
 from subprocess import Popen  # nosec - Need to allow users to specify arbitrary commands
-from typing import Dict, List, Tuple, Union
+from typing import Dict, Tuple, Union
 from warnings import warn
 
 from PIL import Image, ImageDraw, ImageFont
@@ -13,7 +12,6 @@ from pynput.keyboard import Controller, Key
 from StreamDeck import DeviceManager, ImageHelpers
 from StreamDeck.Devices import StreamDeck
 from StreamDeck.ImageHelpers import PILHelper
-
 from streamdeck_ui.config import CONFIG_FILE_VERSION, DEFAULT_FONT, FONTS_PATH, STATE_FILE
 
 from obswebsocket import obsws, requests
@@ -28,6 +26,7 @@ state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = 
 # The OBS password is not stored in the state dictionary. You have to set it up when running streamdeck.
 # If it was stored with state, it would be in plain text. In future this could be improved.
 obs_password = ""
+
 
 def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, state: bool) -> None:
     if state:
@@ -73,7 +72,8 @@ def _key_change_callback(deck_id: str, _deck: StreamDeck.StreamDeck, key: int, s
                 ws.connect()
                 ws.call(requests.SetCurrentScene(obs_scene))
                 ws.disconnect()
-            except:
+            except Exception as error:
+                warn(f"Error while trying to connect to OBS: {error}")
                 pass
 
         kasa_plug_ip = get_button_kasa_plug_ip(deck_id, page, key)
@@ -175,6 +175,7 @@ def ensure_decks_connected() -> None:
                     decks[new_deck_serial] = new_deck
                     render()
 
+
 def set_obs_password(password: str) -> None:
     global obs_password
     obs_password = password
@@ -224,12 +225,12 @@ def set_button_icon(deck_id: str, page: int, button: int, icon: str) -> None:
     render()
     _save_state()
 
+
 # FIXME: A number of issues to deal with here
 # A get method should not have side effects
 # Create secondary cache or move into different
-# module to deal with QImage 
-
-#def get_button_icon(deck_id: str, page: int, button: int) -> str:
+# module to deal with QImage
+# def get_button_icon(deck_id: str, page: int, button: int) -> str:
 #    """Returns the icon set for a particular button"""
 #    return _button_state(deck_id, page, button).get("icon", "")
 
@@ -239,7 +240,6 @@ def get_button_icon(deck_id: str, page: int, button: int) -> str:
     if key not in image_cache:
         print("Didn't find it in cache")
         render()
-    print(f"From cache: {key}")
     return image_cache[key]
 
 
@@ -377,7 +377,7 @@ def render() -> None:
 def _render_key_image(deck, icon: str = "", text: str = "", font: str = DEFAULT_FONT, **kwargs):
     """Renders an individual key image and returns
     it as a PIL image"""
-    image = ImageHelpers.PILHelper.create_image(deck)
+    image = PILHelper.create_image(deck)
     draw = ImageDraw.Draw(image)
 
     if icon:

@@ -9,7 +9,6 @@ from functools import partial
 from PySide2 import QtWidgets
 from PySide2.QtCore import QSize, Qt, QTimer, QMimeData
 from PySide2.QtGui import QIcon, QDrag, QPixmap, QImage
-from PySide2.QtUiTools import QUiLoader
 from PySide2.QtWidgets import (
     QAction,
     QApplication,
@@ -19,12 +18,10 @@ from PySide2.QtWidgets import (
     QSizePolicy,
     QSystemTrayIcon,
     QDialog,
-    QTreeWidgetItem,
-    QWidget,
-    QSpacerItem)
+    QTreeWidgetItem)
 
 from streamdeck_ui import api
-from streamdeck_ui.config import LOGO, PROJECT_PATH, STATE_FILE
+from streamdeck_ui.config import LOGO, STATE_FILE
 from streamdeck_ui.ui_main import Ui_MainWindow
 from streamdeck_ui.preferences import Ui_Dialog
 from streamdeck_ui.plugin import Plugin
@@ -32,13 +29,13 @@ from streamdeck_ui.plugin import Plugin
 from PIL.ImageQt import ImageQt
 
 BUTTON_STYLE = """
-    QToolButton { 
+    QToolButton {
     margin: 8px;
     border: 6px solid #444444;
     border-radius: 8px;
     background-color: #000000;
     border-style: outset;}
-    QToolButton:checked { 
+    QToolButton:checked {
     margin: 8px;
     border: 6px solid #cccccc;
     border-radius: 8px;
@@ -47,7 +44,7 @@ BUTTON_STYLE = """
 """
 
 BUTTON_DRAG_STYLE = """
-    QToolButton { 
+    QToolButton {
     margin: 8px;
     border: 6px solid #999999;
     border-radius: 8px;
@@ -69,7 +66,7 @@ class DraggableButton(QtWidgets.QToolButton):
         self.setAcceptDrops(True)
         self.ui = ui
 
-    def mouseMoveEvent(self, e):
+    def mouseMoveEvent(self, e):  # noqa: N802
 
         if e.buttons() != Qt.LeftButton:
             return
@@ -79,7 +76,7 @@ class DraggableButton(QtWidgets.QToolButton):
         drag.setMimeData(mimedata)
         drag.exec_(Qt.MoveAction)
 
-    def dropEvent(self, e):
+    def dropEvent(self, e):  # noqa: N802
         global selected_button
 
         self.setStyleSheet(BUTTON_STYLE)
@@ -98,14 +95,14 @@ class DraggableButton(QtWidgets.QToolButton):
 
         redraw_buttons(self.ui)
 
-    def dragEnterEvent(self, e):
+    def dragEnterEvent(self, e):  # noqa: N802
         if (type(self) is DraggableButton):
             e.setAccepted(True)
             self.setStyleSheet(BUTTON_DRAG_STYLE)
         else:
             e.setAccepted(False)
 
-    def dragLeaveEvent(self, e):
+    def dragLeaveEvent(self, e):  # noqa: N802
         self.setStyleSheet(BUTTON_STYLE)
 
 
@@ -317,7 +314,7 @@ def show_preferences(window) -> None:
 
 def sync(ui) -> None:
     api.ensure_decks_connected()
-    #ui.brightness.setValue(api.get_brightness(_deck_id(ui)))
+    # ui.brightness.setValue(api.get_brightness(_deck_id(ui)))
     ui.pages.setCurrentIndex(api.get_page(_deck_id(ui)))
 
 
@@ -453,20 +450,19 @@ def start(_exit: bool = False) -> None:
     menu.addAction(action_exit)
 
     tray.setContextMenu(menu)
+    ui.text.textChanged.connect(partial(queue_text_change, ui))
 
     # TODO: load a list of actions
-
-    #ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
-    #ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
-    #ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
-    ui.text.textChanged.connect(partial(queue_text_change, ui))
-    #ui.command.textChanged.connect(partial(update_button_command, ui))
-    #ui.keys.textChanged.connect(partial(update_button_keys, ui))
-    #ui.write.textChanged.connect(partial(update_button_write, ui))
-    #ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
-    #ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
-    #ui.imageButton.clicked.connect(partial(select_image, main_window))
-    #ui.brightness.valueChanged.connect(partial(set_brightness, ui))
+    # ui.kasa_plug_ip.textChanged.connect(partial(update_button_kasa_plug_ip, ui))
+    # ui.obs_password.textChanged.connect(partial(update_button_obs_password, ui))
+    # ui.obs_scene.textChanged.connect(partial(update_button_obs_scene, ui))
+    # ui.command.textChanged.connect(partial(update_button_command, ui))
+    # ui.keys.textChanged.connect(partial(update_button_keys, ui))
+    # ui.write.textChanged.connect(partial(update_button_write, ui))
+    # ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
+    # ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
+    # ui.imageButton.clicked.connect(partial(select_image, main_window))
+    # ui.brightness.valueChanged.connect(partial(set_brightness, ui))
 
     items = api.open_decks().items()
     print("wait for device(s)")
@@ -496,8 +492,11 @@ def start(_exit: bool = False) -> None:
 
     api.render()
     tray.show()
-    #if first_start:
-    main_window.show()
+
+    # FIXME: this should be a setting, for now just always show because its
+    # annoying during development to keep going to the trays
+    if first_start or True:
+        main_window.show()
 
     if _exit:
         return
