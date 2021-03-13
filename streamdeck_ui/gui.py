@@ -333,10 +333,7 @@ def build_device(ui, _device_index=None) -> None:
 
 class PreferencesDialog(QDialog):
     def __init__(self, parent):
-
-        # FIXME: These two statements seem equivalent
-        QDialog.__init__(self, parent)
-        #super(PreferencesDialog, self).__init__(parent)
+        super().__init__(parent)
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.show()
