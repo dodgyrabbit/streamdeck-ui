@@ -87,3 +87,4 @@ out
 poetry.lock
 .hypothesis
 
+*.autosave
