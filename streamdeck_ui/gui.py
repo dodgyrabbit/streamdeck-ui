@@ -8,7 +8,7 @@ from functools import partial
 
 from PySide2 import QtWidgets
 from PySide2.QtCore import QSize, Qt, QTimer, QMimeData
-from PySide2.QtGui import QIcon, QDrag, QPixmap, QImage
+from PySide2.QtGui import QIcon, QDrag
 from PySide2.QtWidgets import (
     QAction,
     QApplication,
@@ -25,8 +25,6 @@ from streamdeck_ui.config import LOGO, STATE_FILE
 from streamdeck_ui.ui_main import Ui_MainWindow
 from streamdeck_ui.preferences import Ui_Dialog
 from streamdeck_ui.plugin import Plugin
-
-from PIL.ImageQt import ImageQt
 
 BUTTON_STYLE = """
     QToolButton {
@@ -189,12 +187,7 @@ def redraw_buttons(ui) -> None:
     for button in buttons:
         button.setText(api.get_button_text(deck_id, _page(ui), button.index))
 
-        # TODO: avoid conversion each time
-        image = ImageQt(api.get_button_icon(deck_id, _page(ui), button.index))
-        image = image.convertToFormat(QImage.Format_ARGB32)
-        pixmap = QPixmap.fromImage(image)
-        icon = QIcon(pixmap)
-        button.setIcon(icon)
+        button.setIcon(api.get_button_icon(deck_id, _page(ui), button.index))
 
 
 def set_brightness(ui, value: int) -> None:
@@ -219,13 +212,6 @@ def button_clicked(ui, clicked_button, buttons) -> None:
     deck_id = _deck_id(ui)
     button_id = selected_button.index
     ui.text.setText(api.get_button_text(deck_id, _page(ui), button_id))
-
-    # TODO: Avoid creating image each time
-    ui.image.setText(api.get_button_text(deck_id, _page(ui), button_id))
-    image = ImageQt(api.get_button_icon(deck_id, _page(ui), button_id))
-    image = image.convertToFormat(QImage.Format_ARGB32)
-    pixmap = QPixmap(image)
-    ui.image.setIcon(QIcon(pixmap))
 
     # TODO: Activate the relevant plugin
 

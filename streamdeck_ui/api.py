@@ -19,7 +19,11 @@ from obswebsocket import obsws, requests
 import asyncio
 from kasa import SmartPlug
 
-image_cache: Dict[str, object] = {}
+from PIL.ImageQt import ImageQt
+from PySide2.QtGui import QPixmap, QImage
+
+image_cache: Dict[str, Tuple[object, object]] = {}
+
 decks: Dict[str, StreamDeck.StreamDeck] = {}
 state: Dict[str, Dict[str, Union[int, Dict[int, Dict[int, Dict[str, str]]]]]] = {}
 
@@ -240,7 +244,7 @@ def get_button_icon(deck_id: str, page: int, button: int) -> str:
     if key not in image_cache:
         print("Didn't find it in cache")
         render()
-    return image_cache[key]
+    return image_cache[key][1]
 
 
 def set_button_change_brightness(deck_id: str, page: int, button: int, amount: int) -> None:
@@ -364,14 +368,18 @@ def render() -> None:
         ):
             key = f"{deck_id}.{page}.{button_id}"
             if key in image_cache:
-                image = image_cache[key]
+                image = image_cache[key][0]
             else:
-                image = _render_key_image(deck, **button_settings)
-                image_cache[key] = image
+                pil_image = _render_key_image(deck, **button_settings)
+                image = ImageHelpers.PILHelper.to_native_format(deck, pil_image)
 
-            # FIXME: don't want to do the conversion each time, but for now
-            # keep image in PIL format
-            deck.set_key_image(button_id, ImageHelpers.PILHelper.to_native_format(deck, image))
+                qt_image = ImageQt(pil_image)
+                qt_image = qt_image.convertToFormat(QImage.Format_ARGB32)
+                pixmap = QPixmap(qt_image)
+
+                image_cache[key] = (image, pixmap)
+
+            deck.set_key_image(button_id, image)
 
 
 def _render_key_image(deck, icon: str = "", text: str = "", font: str = DEFAULT_FONT, **kwargs):
