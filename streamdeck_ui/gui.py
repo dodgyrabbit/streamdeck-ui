@@ -21,20 +21,20 @@ from PySide2.QtWidgets import (
     QTreeWidgetItem)
 
 from streamdeck_ui import api
-from streamdeck_ui.config import LOGO, STATE_FILE
+from streamdeck_ui.config import LOGO, STATE_FILE, ART_PATH
 from streamdeck_ui.ui_main import Ui_MainWindow
 from streamdeck_ui.preferences import Ui_Dialog
 from streamdeck_ui.plugin import Plugin
 
 BUTTON_STYLE = """
     QToolButton {
-    margin: 8px;
+    margin: 6px;
     border: 6px solid #444444;
     border-radius: 8px;
     background-color: #000000;
     border-style: outset;}
     QToolButton:checked {
-    margin: 8px;
+    margin: 6px;
     border: 6px solid #cccccc;
     border-radius: 8px;
     background-color: #000000;
@@ -43,7 +43,7 @@ BUTTON_STYLE = """
 
 BUTTON_DRAG_STYLE = """
     QToolButton {
-    margin: 8px;
+    margin: 6px;
     border: 6px solid #999999;
     border-radius: 8px;
     background-color: #000000;
@@ -332,9 +332,12 @@ class MainWindow(QMainWindow):
         self.ui.tree.setHeaderLabels([""])
         self.help_item = self.ui.plugin.itemAt(0)
 
+        self.ui.upArrow.setIcon(QIcon(os.path.join(ART_PATH, "up_arrow.png")))
+        self.ui.downArrow.setIcon(QIcon(os.path.join(ART_PATH, "down_arrow.png")))
+
         # TODO: Auto categorise based on dynamic module properties
         tree_widget_item1 = QTreeWidgetItem(["Keyboard"])
-        tree_widget_item1.setIcon(0, QIcon("streamdeck_ui/keyboard_24.png"))
+        tree_widget_item1.setIcon(0, QIcon(os.path.join(ART_PATH, "keyboard_24.png")))
         tree_widget_item1.setExpanded(True)
 
         for action in self.plugins:
@@ -447,7 +450,7 @@ def start(_exit: bool = False) -> None:
     # ui.write.textChanged.connect(partial(update_button_write, ui))
     # ui.change_brightness.valueChanged.connect(partial(update_change_brightness, ui))
     # ui.switch_page.valueChanged.connect(partial(update_switch_page, ui))
-    # ui.imageButton.clicked.connect(partial(select_image, main_window))
+    ui.imageButton.clicked.connect(partial(select_image, main_window))
     # ui.brightness.valueChanged.connect(partial(set_brightness, ui))
 
     items = api.open_decks().items()

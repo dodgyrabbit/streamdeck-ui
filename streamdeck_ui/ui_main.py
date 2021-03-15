@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(887, 537)
+        MainWindow.resize(897, 495)
         self.actionImport = QAction(MainWindow)
         self.actionImport.setObjectName(u"actionImport")
         self.actionExport = QAction(MainWindow)
@@ -37,6 +37,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(-1, 0, -1, -1)
         self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setSpacing(6)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -61,7 +62,7 @@ class Ui_MainWindow(object):
         self.pages = QTabWidget(self.centralwidget)
         self.pages.setObjectName(u"pages")
         self.pages.setAutoFillBackground(False)
-        self.pages.setStyleSheet(u"b")
+        self.pages.setStyleSheet(u"")
         self.page_1 = QWidget()
         self.page_1.setObjectName(u"page_1")
         self.gridLayout_2 = QGridLayout(self.page_1)
@@ -126,11 +127,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setSpacing(6)
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(-1, -1, 0, 0)
-        self.gridLayout_12 = QGridLayout()
-        self.gridLayout_12.setObjectName(u"gridLayout_12")
-        self.gridLayout_12.setHorizontalSpacing(0)
-        self.gridLayout_12.setVerticalSpacing(3)
-        self.gridLayout_12.setContentsMargins(-1, -1, -1, 0)
         self.text = QLineEdit(self.centralwidget)
         self.text.setObjectName(u"text")
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
@@ -140,56 +136,29 @@ class Ui_MainWindow(object):
         self.text.setSizePolicy(sizePolicy)
         self.text.setClearButtonEnabled(False)
 
-        self.gridLayout_12.addWidget(self.text, 0, 1, 1, 1)
+        self.horizontalLayout_2.addWidget(self.text)
 
-        self.horizontalLayout_3 = QHBoxLayout()
-        self.horizontalLayout_3.setSpacing(6)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.upArrow = QToolButton(self.centralwidget)
+        self.upArrow.setObjectName(u"upArrow")
+        icon = QIcon()
+        icon.addFile(u"../art/up_arrow.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.upArrow.setIcon(icon)
 
-        self.horizontalLayout_3.addItem(self.horizontalSpacer)
+        self.horizontalLayout_2.addWidget(self.upArrow)
 
-        self.toolButton_3 = QToolButton(self.centralwidget)
-        self.toolButton_3.setObjectName(u"toolButton_3")
+        self.downArrow = QToolButton(self.centralwidget)
+        self.downArrow.setObjectName(u"downArrow")
+        icon1 = QIcon()
+        icon1.addFile(u"../art/down_arrow.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.downArrow.setIcon(icon1)
 
-        self.horizontalLayout_3.addWidget(self.toolButton_3)
+        self.horizontalLayout_2.addWidget(self.downArrow)
 
-        self.toolButton = QToolButton(self.centralwidget)
-        self.toolButton.setObjectName(u"toolButton")
+        self.imageButton = QPushButton(self.centralwidget)
+        self.imageButton.setObjectName(u"imageButton")
 
-        self.horizontalLayout_3.addWidget(self.toolButton)
+        self.horizontalLayout_2.addWidget(self.imageButton)
 
-        self.toolButton_2 = QToolButton(self.centralwidget)
-        self.toolButton_2.setObjectName(u"toolButton_2")
-
-        self.horizontalLayout_3.addWidget(self.toolButton_2)
-
-
-        self.gridLayout_12.addLayout(self.horizontalLayout_3, 1, 0, 1, 2)
-
-
-        self.horizontalLayout_2.addLayout(self.gridLayout_12)
-
-        self.verticalLayout_7 = QVBoxLayout()
-        self.verticalLayout_7.setSpacing(0)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(-1, -1, -1, 0)
-        self.image = QToolButton(self.centralwidget)
-        self.image.setObjectName(u"image")
-        self.image.setMinimumSize(QSize(48, 48))
-        self.image.setIconSize(QSize(64, 64))
-        self.image.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
-
-        self.verticalLayout_7.addWidget(self.image)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 0, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.verticalLayout_7.addItem(self.verticalSpacer_2)
-
-
-        self.horizontalLayout_2.addLayout(self.verticalLayout_7)
-
-        self.horizontalLayout_2.setStretch(0, 1)
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_2)
 
@@ -217,6 +186,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
         self.label.setSizePolicy(sizePolicy1)
+        self.label.setMinimumSize(QSize(0, 0))
         self.label.setTextFormat(Qt.MarkdownText)
         self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.label.setWordWrap(True)
@@ -244,18 +214,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.down = QToolButton(self.Actions)
         self.down.setObjectName(u"down")
-        icon = QIcon()
-        icon.addFile(u"../art/down_arrow.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.down.setIcon(icon)
+        self.down.setIcon(icon1)
         self.down.setCheckable(True)
 
         self.horizontalLayout_7.addWidget(self.down)
 
         self.up = QToolButton(self.Actions)
         self.up.setObjectName(u"up")
-        icon1 = QIcon()
-        icon1.addFile(u"../art/up_arrow.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.up.setIcon(icon1)
+        self.up.setIcon(icon)
         self.up.setCheckable(True)
         self.up.setChecked(False)
 
@@ -293,7 +259,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 887, 22))
+        self.menubar.setGeometry(QRect(0, 0, 897, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         MainWindow.setMenuBar(self.menubar)
@@ -336,10 +302,9 @@ class Ui_MainWindow(object):
         self.pages.setTabText(self.pages.indexOf(self.tab_10), QCoreApplication.translate("MainWindow", u"10", None))
         self.text.setInputMask("")
         self.text.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Button text", None))
-        self.toolButton_3.setText(QCoreApplication.translate("MainWindow", u"\u23af", None))
-        self.toolButton.setText(QCoreApplication.translate("MainWindow", u"\u2500", None))
-        self.toolButton_2.setText(QCoreApplication.translate("MainWindow", u"\u203e", None))
-        self.image.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.upArrow.setText(QCoreApplication.translate("MainWindow", u"\u203e", None))
+        self.downArrow.setText(QCoreApplication.translate("MainWindow", u"\u23af", None))
+        self.imageButton.setText(QCoreApplication.translate("MainWindow", u"Image...", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Select an **action** to perform from the list above, and configure the action here. Add it to the list of actions to perform, and you're all set!", None))
         self.add.setText(QCoreApplication.translate("MainWindow", u"Add to actions", None))
         self.Actions.setTitle(QCoreApplication.translate("MainWindow", u"Actions", None))
